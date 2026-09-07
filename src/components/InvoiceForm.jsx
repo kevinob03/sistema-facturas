@@ -1,4 +1,10 @@
 import { useState } from 'react'
+import { TAX_RATE, getSubtotal, getTax, getTotal, formatMoney } from '../utils/invoiceCalculator'
+import {
+  lookupByIdentificacion,
+  tipoIdentificacionLabel,
+  cleanIdentificacion,
+} from '../utils/haciendaApi'
 
 const emptyItem = () => ({
   id: Date.now() + Math.random(),
@@ -7,15 +13,24 @@ const emptyItem = () => ({
   unitPrice: '',
 })
 
-function InvoiceForm({ onAddInvoice }) {
+function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
   const [issuerName, setIssuerName] = useState('')
   const [issuerTaxId, setIssuerTaxId] = useState('')
   const [clientName, setClientName] = useState('')
   const [clientContact, setClientContact] = useState('')
-  const [invoiceNumber, setInvoiceNumber] = useState('')
+  const [clientTaxId, setClientTaxId] = useState('')
+  const [invoiceNumber, setInvoiceNumber] = useState(nextNumber)
   const [invoiceDate, setInvoiceDate] = useState('')
   const [items, setItems] = useState([emptyItem()])
   const [errors, setErrors] = useState({})
+  const [haciendaData, setHaciendaData] = useState(null)
+  const [haciendaLoading, setHaciendaLoading] = useState(false)
+  const [haciendaError, setHaciendaError] = useState('')
+
+  const subtotal = getSubtotal(items)
+  const tax = getTax(subtotal)
+  const total = getTotal(subtotal, tax)
+  const taxPercent = Math.round(TAX_RATE * 100)
 
   const handleItemChange = (index, field, value) => {
     setItems((prevItems) =>
@@ -31,6 +46,36 @@ function InvoiceForm({ onAddInvoice }) {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index))
   }
 
+  const consultarCliente = async () => {
+    if (!cleanIdentificacion(clientTaxId)) {
+      setHaciendaError('Ingresa la cédula del cliente primero')
+      setHaciendaData(null)
+      return
+    }
+
+    setHaciendaLoading(true)
+    setHaciendaError('')
+    setHaciendaData(null)
+
+    try {
+      const data = await lookupByIdentificacion(clientTaxId)
+      setHaciendaData(data)
+      if (data.nombre) setClientName(data.nombre)
+      setErrors((prev) => ({ ...prev, clientName: '' }))
+    } catch (err) {
+      setHaciendaError(err.message)
+      setHaciendaData(null)
+    } finally {
+      setHaciendaLoading(false)
+    }
+  }
+
+  const handleCedulaChange = (value) => {
+    setClientTaxId(value)
+    setHaciendaError('')
+    setHaciendaData(null)
+  }
+
   const validate = () => {
     const newErrors = {}
 
@@ -40,6 +85,8 @@ function InvoiceForm({ onAddInvoice }) {
     if (!clientContact.trim())
       newErrors.clientContact = 'La dirección o correo es obligatorio'
     if (!invoiceNumber.trim()) newErrors.invoiceNumber = 'El número de factura es obligatorio'
+    else if (existingNumbers.includes(invoiceNumber.trim()))
+      newErrors.invoiceNumber = 'El número de factura ya existe'
     if (!invoiceDate) newErrors.invoiceDate = 'La fecha de emisión es obligatoria'
 
     const itemErrors = items.map((item) => {
@@ -80,9 +127,11 @@ function InvoiceForm({ onAddInvoice }) {
       client: {
         name: clientName.trim(),
         contact: clientContact.trim(),
+        taxId: cleanIdentificacion(clientTaxId) || undefined,
       },
       invoiceNumber: invoiceNumber.trim(),
       date: invoiceDate,
+      status: 'emitida',
       items: items.map((item) => ({
         id: item.id,
         description: item.description.trim(),
@@ -97,140 +146,208 @@ function InvoiceForm({ onAddInvoice }) {
     setIssuerTaxId('')
     setClientName('')
     setClientContact('')
+    setClientTaxId('')
     setInvoiceNumber('')
     setInvoiceDate('')
     setItems([emptyItem()])
     setErrors({})
+    setHaciendaData(null)
+    setHaciendaError('')
   }
 
   return (
-    <form className="invoice-form" onSubmit={handleSubmit}>
-      <h2>Crear Factura</h2>
+    <form className="invoice-form card" onSubmit={handleSubmit}>
+      <h2 className="form-title">Nueva factura</h2>
 
-      <fieldset>
-        <legend>Datos del Emisor</legend>
-        <div className="field">
-          <label>
-            Nombre de la empresa
+      <section className="form-section">
+        <h3 className="form-section-title">Datos del emisor</h3>
+        <div className="form-grid">
+          <div className="field">
+            <label htmlFor="issuerName">Nombre de la empresa</label>
             <input
+              id="issuerName"
               type="text"
               value={issuerName}
               onChange={(e) => setIssuerName(e.target.value)}
+              className={errors.issuerName ? 'input-error' : ''}
             />
-          </label>
-          {errors.issuerName && <p className="error">{errors.issuerName}</p>}
-        </div>
-        <div className="field">
-          <label>
-            RUC/NIT/ID fiscal
+            {errors.issuerName && <p className="error">{errors.issuerName}</p>}
+          </div>
+          <div className="field">
+            <label htmlFor="issuerTaxId">RUC/NIT/ID fiscal</label>
             <input
+              id="issuerTaxId"
               type="text"
               value={issuerTaxId}
               onChange={(e) => setIssuerTaxId(e.target.value)}
+              className={errors.issuerTaxId ? 'input-error' : ''}
             />
-          </label>
-          {errors.issuerTaxId && <p className="error">{errors.issuerTaxId}</p>}
+            {errors.issuerTaxId && <p className="error">{errors.issuerTaxId}</p>}
+          </div>
         </div>
-      </fieldset>
+      </section>
 
-      <fieldset>
-        <legend>Datos del Cliente</legend>
-        <div className="field">
-          <label>
-            Nombre del cliente
+      <section className="form-section">
+        <h3 className="form-section-title">Datos del cliente</h3>
+        <div className="form-grid">
+          <div className="field cedula-field">
+            <label htmlFor="clientTaxId">Cédula del cliente (física o jurídica)</label>
+            <div className="cedula-lookup">
+              <input
+                id="clientTaxId"
+                type="text"
+                placeholder="Ej. 2100042005"
+                value={clientTaxId}
+                onChange={(e) => handleCedulaChange(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    consultarCliente()
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={consultarCliente}
+                disabled={haciendaLoading}
+              >
+                {haciendaLoading ? 'Consultando…' : 'Consultar Hacienda'}
+              </button>
+            </div>
+            {haciendaError && <p className="error">{haciendaError}</p>}
+            {haciendaData && (
+              <div className="hacienda-chip">
+                <span className="hacienda-chip-name">{haciendaData.nombre}</span>
+                <span className="hacienda-chip-tag">
+                  {tipoIdentificacionLabel(haciendaData.tipoIdentificacion)}
+                </span>
+                <span className="hacienda-chip-tag">
+                  {haciendaData.situacion?.estado || 'Sin estado'}
+                </span>
+                <span
+                  className={`hacienda-chip-status${
+                    haciendaData.situacion?.moroso === 'SI' ||
+                    haciendaData.situacion?.omiso === 'SI'
+                      ? ' hacienda-chip-status-alerta'
+                      : ''
+                  }`}
+                >
+                  {haciendaData.situacion?.moroso === 'SI' ? 'Moroso' : 'No moroso'} ·{' '}
+                  {haciendaData.situacion?.omiso === 'SI' ? 'omiso' : 'al corriente'}
+                </span>
+                {haciendaData.situacion?.administracionTributaria && (
+                  <span className="hacienda-chip-meta">
+                    {haciendaData.situacion.administracionTributaria}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="field">
+            <label htmlFor="clientName">Nombre del cliente</label>
             <input
+              id="clientName"
               type="text"
               value={clientName}
               onChange={(e) => setClientName(e.target.value)}
+              className={errors.clientName ? 'input-error' : ''}
             />
-          </label>
-          {errors.clientName && <p className="error">{errors.clientName}</p>}
-        </div>
-        <div className="field">
-          <label>
-            Dirección o correo
+            {errors.clientName && <p className="error">{errors.clientName}</p>}
+          </div>
+          <div className="field">
+            <label htmlFor="clientContact">Dirección o correo</label>
             <input
+              id="clientContact"
               type="text"
               value={clientContact}
               onChange={(e) => setClientContact(e.target.value)}
+              className={errors.clientContact ? 'input-error' : ''}
             />
-          </label>
-          {errors.clientContact && <p className="error">{errors.clientContact}</p>}
+            {errors.clientContact && <p className="error">{errors.clientContact}</p>}
+          </div>
         </div>
-      </fieldset>
+      </section>
 
-      <fieldset>
-        <legend>Datos de la Factura</legend>
-        <div className="field">
-          <label>
-            Número de factura
+      <section className="form-section">
+        <h3 className="form-section-title">Datos de la factura</h3>
+        <div className="form-grid">
+          <div className="field">
+            <label htmlFor="invoiceNumber">Número de factura</label>
             <input
+              id="invoiceNumber"
               type="text"
               value={invoiceNumber}
               onChange={(e) => setInvoiceNumber(e.target.value)}
+              className={errors.invoiceNumber ? 'input-error' : ''}
             />
-          </label>
-          {errors.invoiceNumber && <p className="error">{errors.invoiceNumber}</p>}
-        </div>
-        <div className="field">
-          <label>
-            Fecha de emisión
+            {errors.invoiceNumber && <p className="error">{errors.invoiceNumber}</p>}
+          </div>
+          <div className="field">
+            <label htmlFor="invoiceDate">Fecha de emisión</label>
             <input
+              id="invoiceDate"
               type="date"
               value={invoiceDate}
               onChange={(e) => setInvoiceDate(e.target.value)}
+              className={errors.invoiceDate ? 'input-error' : ''}
             />
-          </label>
-          {errors.invoiceDate && <p className="error">{errors.invoiceDate}</p>}
+            {errors.invoiceDate && <p className="error">{errors.invoiceDate}</p>}
+          </div>
         </div>
-      </fieldset>
+      </section>
 
-      <fieldset>
-        <legend>Ítems</legend>
+      <section className="form-section">
+        <h3 className="form-section-title">Ítems</h3>
+
+        <div className="items-header">
+          <span>Descripción</span>
+          <span>Cantidad</span>
+          <span>Precio unitario</span>
+          <span></span>
+        </div>
+
         {items.map((item, index) => (
-          <div className="item-row" key={item.id}>
+          <div className="item-line" key={item.id}>
             <div className="field item-description">
-              <label>
-                Descripción
-                <input
-                  type="text"
-                  value={item.description}
-                  onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                />
-              </label>
+              <input
+                type="text"
+                placeholder="Descripción del producto o servicio"
+                value={item.description}
+                onChange={(e) => handleItemChange(index, 'description', e.target.value)}
+                className={errors.items?.[index]?.description ? 'input-error' : ''}
+              />
               {errors.items?.[index]?.description && (
                 <p className="error">{errors.items[index].description}</p>
               )}
             </div>
             <div className="field">
-              <label>
-                Cantidad
-                <input
-                  type="text"
-                  value={item.quantity}
-                  onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
-                />
-              </label>
+              <input
+                type="text"
+                placeholder="0"
+                value={item.quantity}
+                onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
+                className={errors.items?.[index]?.quantity ? 'input-error' : ''}
+              />
               {errors.items?.[index]?.quantity && (
                 <p className="error">{errors.items[index].quantity}</p>
               )}
             </div>
             <div className="field">
-              <label>
-                Precio unitario
-                <input
-                  type="text"
-                  value={item.unitPrice}
-                  onChange={(e) => handleItemChange(index, 'unitPrice', e.target.value)}
-                />
-              </label>
+              <input
+                type="text"
+                placeholder="0.00"
+                value={item.unitPrice}
+                onChange={(e) => handleItemChange(index, 'unitPrice', e.target.value)}
+                className={errors.items?.[index]?.unitPrice ? 'input-error' : ''}
+              />
               {errors.items?.[index]?.unitPrice && (
                 <p className="error">{errors.items[index].unitPrice}</p>
               )}
             </div>
             <button
               type="button"
-              className="remove-item"
+              className="btn-remove"
               onClick={() => removeItem(index)}
               disabled={items.length === 1}
             >
@@ -238,14 +355,35 @@ function InvoiceForm({ onAddInvoice }) {
             </button>
           </div>
         ))}
-        <button type="button" className="add-item" onClick={addItem}>
+
+        <button type="button" className="btn-secondary" onClick={addItem}>
           Agregar ítem
         </button>
-      </fieldset>
+      </section>
 
-      <button type="submit" className="submit">
-        Guardar factura
-      </button>
+      <section className="form-section">
+        <h3 className="form-section-title">Resumen en vivo</h3>
+        <div className="form-summary">
+          <div className="summary-row">
+            <span>Subtotal</span>
+            <span>{formatMoney(subtotal)}</span>
+          </div>
+          <div className="summary-row">
+            <span>Impuesto ({taxPercent}%)</span>
+            <span>{formatMoney(tax)}</span>
+          </div>
+          <div className="summary-row summary-total">
+            <span>Total</span>
+            <span>{formatMoney(total)}</span>
+          </div>
+        </div>
+      </section>
+
+      <div className="form-actions">
+        <button type="submit" className="btn-primary">
+          Guardar factura
+        </button>
+      </div>
     </form>
   )
 }

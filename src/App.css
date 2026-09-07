@@ -1,128 +1,1151 @@
-.app {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.app h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.invoice-form,
-.invoice-list {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  background-color: #fff;
-}
-
-.invoice-form fieldset {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.invoice-form legend {
-  font-weight: bold;
-  padding: 0 6px;
-}
-
-.invoice-form .field {
-  margin-bottom: 12px;
-}
-
-.invoice-form label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.invoice-form input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.invoice-form input:focus {
-  outline: 2px solid #4a90e2;
-  border-color: transparent;
-}
-
-.invoice-form .error {
-  color: #d33;
-  font-size: 13px;
-  margin-top: 4px;
-}
-
-.item-row {
+/* Layout general */
+.app-layout {
+  min-height: 100vh;
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  padding: 12px;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  margin-bottom: 10px;
+  flex-direction: column;
 }
 
-.item-row .item-description {
+.topbar {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.brand-name {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.app-body {
+  display: flex;
   flex: 1;
 }
 
-.item-row .field:not(.item-description) {
-  width: 130px;
+.sidebar {
+  width: 220px;
+  background: var(--sidebar-bg);
+  padding: 20px 12px;
 }
 
-.item-row .remove-item {
-  margin-top: 26px;
-  padding: 8px 12px;
-  background-color: #d33;
-  color: #fff;
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--sidebar-text);
   font-size: 14px;
-  white-space: nowrap;
+  cursor: pointer;
 }
 
-.item-row .remove-item:disabled {
-  background-color: #ccc;
+.nav-item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-item.active {
+  color: #fff;
+  background: var(--primary);
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+/* Encabezado de página */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* Botones */
+.btn-primary {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--surface-subtle);
+}
+
+/* Tarjetas */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.invoice-form,
+.invoice-list,
+.invoice {
+  margin-bottom: 24px;
+}
+
+/* Formulario */
+.invoice-form {
+  padding: 24px;
+}
+
+.form-title {
+  margin-bottom: 20px;
+}
+
+.form-section {
+  padding: 20px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-subtle);
+}
+
+.form-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.field input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.field input:focus {
+  outline: 2px solid var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.field input.input-error {
+  border-color: var(--danger);
+}
+
+.error {
+  color: var(--danger);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Ítems dinámicos */
+.items-header {
+  display: grid;
+  grid-template-columns: 1fr 120px 140px 90px;
+  gap: 12px;
+  padding: 0 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.item-line {
+  display: grid;
+  grid-template-columns: 1fr 120px 140px 90px;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.btn-remove {
+  padding: 8px 10px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-remove:hover {
+  background: #fee2e2;
+}
+
+.btn-remove:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.invoice-form .add-item {
-  padding: 8px 16px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
+.invoice-form .btn-secondary {
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Listado */
+.invoice-list {
+  padding: 24px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.card-header h2 {
+  font-size: 17px;
+}
+
+.count-badge {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.invoice-table,
+.invoice-items-table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 14px;
 }
 
-.invoice-form .submit {
-  width: 100%;
-  padding: 12px;
-  background-color: #4a90e2;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: bold;
+.invoice-table th,
+.invoice-table td,
+.invoice-items-table th,
+.invoice-items-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.invoice-table thead th,
+.invoice-items-table thead th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  background: var(--surface-subtle);
+}
+
+.invoice-table tbody tr {
   cursor: pointer;
 }
 
-.invoice-form .submit:hover {
-  background-color: #357abd;
+.invoice-table tbody tr:hover {
+  background: #f8fafc;
 }
 
+.invoice-table tbody tr.selected {
+  background: var(--primary-soft);
+}
+
+.invoice-table tbody tr.selected td:first-child {
+  box-shadow: inset 3px 0 0 var(--primary);
+}
+
+.align-right {
+  text-align: right;
+}
+
+.cell-number {
+  font-weight: 600;
+}
+
+.cell-total {
+  font-weight: 600;
+}
+
+/* Estado vacío */
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* Documento de factura */
 .invoice {
-  border: 1px solid #eee;
-  border-radius: 4px;
-  padding: 10px;
+  padding: 24px;
+}
+
+.invoice-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.invoice-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--text);
+}
+
+.issuer-name {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.issuer-tax {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.invoice-meta {
+  text-align: right;
+}
+
+.invoice-meta p {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.invoice-tag {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--primary);
+}
+
+.invoice-client {
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  background: var(--surface-subtle);
+  border-radius: 8px;
+}
+
+.invoice-client h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.client-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.client-contact {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.client-tax {
+  font-size: 12.5px;
+  color: var(--text);
+}
+
+.invoice-items-table {
+  margin-bottom: 20px;
+}
+
+.invoice-items-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.invoice-summary {
+  max-width: 340px;
+  margin-left: auto;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.summary-row + .summary-row {
+  border-top: 1px solid var(--border);
+}
+
+.summary-total {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.invoice-empty-title {
+  margin-bottom: 8px;
+}
+
+/* Métricas */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.metric-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Filtros */
+.invoice-filters {
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.filter-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.filter-field input,
+.filter-field select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  outline: 2px solid var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.filter-clear {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Resumen en vivo del formulario */
+.form-summary {
+  max-width: 340px;
+  margin-left: auto;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-header {
+    flex-direction: column;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .items-header {
+    display: none;
+  }
+
+  .item-line {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .item-description {
+    grid-column: 1 / -1;
+  }
+
+  .invoice-header {
+    flex-direction: column;
+  }
+
+  .invoice-meta {
+    text-align: left;
+  }
+
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filter-clear {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .item-line {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Consulta Hacienda (cédula) */
+.cedula-field {
+  grid-column: 1 / -1;
+}
+
+.cedula-lookup {
+  display: flex;
+  gap: 8px;
+}
+
+.cedula-lookup input {
+  flex: 1;
+  min-width: 0;
+}
+
+.cedula-lookup .btn-secondary {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.hacienda-chip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-subtle);
+  font-size: 13px;
+}
+
+.hacienda-chip-name {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.hacienda-chip-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.hacienda-chip-status {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.hacienda-chip-status-alerta {
+  color: var(--danger);
+}
+
+.hacienda-chip-meta {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Badge de estado */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-emitida {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.status-pagada {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.status-anulada {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Botón de peligro */
+.btn-danger {
+  padding: 10px 18px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #fee2e2;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 18px;
+  background: var(--text);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: var(--shadow);
+  z-index: 100;
+  animation: toast-in 0.2s ease-out;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Encabezados ordenables */
+.invoice-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.invoice-table th.sortable:hover {
+  color: var(--text);
+}
+
+.invoice-table th.sort-active {
+  color: var(--primary);
+}
+
+.sort-arrow {
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+/* Dashboard y gráficas CSS */
+.dashboard {
+  margin-bottom: 24px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.chart-card {
+  padding: 20px;
+}
+
+.chart-card.full {
+  grid-column: 1 / -1;
+}
+
+.chart-title {
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+.bar-chart-vertical {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.bar-value {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.bar-canvas {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 120px;
+  background: var(--surface-subtle);
+  border-radius: 6px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  width: 100%;
+  min-height: 2px;
+  background: var(--primary);
+  border-radius: 6px 6px 0 0;
+}
+
+.bar-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.h-bar-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 110px;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 10px;
+}
+
+.h-bar-label {
+  font-size: 13px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.h-bar-track {
+  height: 14px;
+  background: var(--surface-subtle);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.h-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: var(--primary);
+}
+
+.status-fill-emitida {
+  background: var(--primary);
+}
+
+.status-fill-pagada {
+  background: #16a34a;
+}
+
+.status-fill-anulada {
+  background: #9ca3af;
+}
+
+.h-bar-value {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card.full {
+    grid-column: 1;
+  }
+
+  .h-bar-row {
+    grid-template-columns: 96px 1fr;
+  }
+
+  .h-bar-value {
+    display: none;
+  }
+}
+/* Integración visual: funcionalidades originales con apariencia ERP */
+.factura-erp .erp-side-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font-family: inherit;
+}
+
+.factura-erp .legacy-erp-content {
+  padding: 20px;
+}
+
+.factura-erp .legacy-erp-page-head {
+  margin-bottom: 2px;
+}
+
+.factura-erp .card,
+.factura-erp .invoice-list,
+.factura-erp .invoice-filters,
+.factura-erp .invoice {
+  background: var(--erp-surface);
+  border: 1px solid var(--erp-border);
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.factura-erp .card-header,
+.factura-erp .invoice-header {
+  background: var(--erp-surface-alt);
+  border-color: var(--erp-border);
+}
+
+.factura-erp .invoice-filters input,
+.factura-erp .invoice-filters select,
+.factura-erp .invoice-form input,
+.factura-erp .invoice-form select,
+.factura-erp .invoice-form textarea {
+  border-radius: 4px;
+  border-color: var(--erp-border);
+}
+
+.factura-erp .invoice-filters input:focus,
+.factura-erp .invoice-filters select:focus,
+.factura-erp .invoice-form input:focus,
+.factura-erp .invoice-form select:focus,
+.factura-erp .invoice-form textarea:focus {
+  border-color: var(--erp-accent);
+  box-shadow: 0 0 0 2px var(--erp-accent-soft);
+}
+
+.factura-erp .invoice-table th,
+.factura-erp .invoice-items-table th {
+  background: var(--erp-surface-alt);
+  color: var(--erp-muted);
+  font-size: 10px;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+
+.factura-erp .invoice-table td,
+.factura-erp .invoice-items-table td {
+  border-color: var(--erp-border-soft);
+}
+
+.factura-erp .btn-primary {
+  background: var(--erp-accent);
+  border-color: var(--erp-accent);
+  border-radius: 4px;
+}
+
+.factura-erp .btn-secondary,
+.factura-erp .btn-danger {
+  border-radius: 4px;
+}
+
+/* Acabado visual ERP sin alterar los flujos de facturación */
+.factura-erp {
+  --primary: var(--erp-accent);
+  --primary-hover: #1e40af;
+  --primary-soft: var(--erp-accent-soft);
+  --surface: var(--erp-surface);
+  --surface-subtle: var(--erp-surface-alt);
+  --border: var(--erp-border);
+  --text: var(--erp-text);
+  --text-muted: var(--erp-muted);
+  --radius: 4px;
+}
+
+.factura-erp .dashboard,
+.factura-erp .invoice-form,
+.factura-erp .invoice-list,
+.factura-erp .invoice-filters,
+.factura-erp .invoice {
+  animation: factura-erp-enter .18s ease-out;
+}
+
+.factura-erp .form-title,
+.factura-erp .card-header h2,
+.factura-erp .chart-title,
+.factura-erp .invoice-empty-title {
+  color: var(--erp-text-strong);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.factura-erp .form-title,
+.factura-erp .card-header,
+.factura-erp .invoice-header {
+  padding: 12px 14px;
+}
+
+.factura-erp .form-section {
+  padding: 14px;
+  border-color: var(--erp-border-soft);
+}
+
+.factura-erp .form-section-title,
+.factura-erp .filter-field label {
+  color: var(--erp-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+.factura-erp .form-grid,
+.factura-erp .filters-grid {
+  gap: 12px;
+}
+
+.factura-erp .invoice-filters,
+.factura-erp .invoice-list,
+.factura-erp .invoice-form,
+.factura-erp .invoice {
+  overflow: hidden;
+}
+
+.factura-erp .invoice-filters {
+  padding: 14px;
+}
+
+.factura-erp .invoice-form input,
+.factura-erp .invoice-form select,
+.factura-erp .invoice-form textarea,
+.factura-erp .invoice-filters input,
+.factura-erp .invoice-filters select {
+  min-height: 32px;
+  background: #fff;
+  color: var(--erp-text);
+  font-size: 12px;
+}
+
+.factura-erp .invoice-table,
+.factura-erp .invoice-items-table {
+  font-size: 12px;
+}
+
+.factura-erp .invoice-table th,
+.factura-erp .invoice-table td,
+.factura-erp .invoice-items-table th,
+.factura-erp .invoice-items-table td {
+  padding: 9px 12px;
+}
+
+.factura-erp .invoice-table tbody tr:hover td {
+  background: var(--erp-cell);
+}
+
+.factura-erp .invoice-table tr.selected td {
+  background: var(--erp-accent-soft);
+}
+
+.factura-erp .metric-card,
+.factura-erp .chart-card {
+  border-color: var(--erp-border);
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.factura-erp .metric-card {
+  border-top: 3px solid var(--erp-accent);
+}
+
+.factura-erp .metric-label {
+  color: var(--erp-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+.factura-erp .metric-value {
+  color: var(--erp-text-strong);
+  font-family: var(--erp-mono);
+  font-size: 22px;
+}
+
+.factura-erp .status-badge {
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.factura-erp .form-summary,
+.factura-erp .invoice-summary {
+  background: var(--erp-surface-alt);
+  border-color: var(--erp-border);
+}
+
+.factura-erp .btn-primary,
+.factura-erp .btn-secondary,
+.factura-erp .btn-danger,
+.factura-erp .btn-remove {
+  min-height: 32px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.factura-erp .btn-secondary {
+  background: var(--erp-surface);
+  border-color: var(--erp-border);
+  color: var(--erp-text);
+}
+
+.factura-erp .btn-secondary:hover {
+  background: var(--erp-cell);
+  border-color: var(--erp-muted-soft);
+}
+
+@keyframes factura-erp-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 760px) {
+  .factura-erp .erp-sidebar { width: 52px; }
+  .factura-erp .erp-side-title,
+  .factura-erp .erp-side-label,
+  .factura-erp .erp-side-item > span:last-child { display: none; }
+  .factura-erp .erp-side-item { justify-content: center; padding: 0; }
+  .factura-erp .legacy-erp-content { padding: 12px; }
+  .factura-erp .legacy-erp-page-head { align-items: flex-start; }
 }
