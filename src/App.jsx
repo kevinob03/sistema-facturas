@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import InvoiceForm from './components/InvoiceForm'
 import InvoiceFilters from './components/InvoiceFilters'
 import InvoiceList from './components/InvoiceList'
@@ -8,9 +8,13 @@ import Toast from './components/Toast'
 import demoInvoices from './data/demoInvoices'
 import { getNextInvoiceNumber } from './utils/invoiceSequence'
 import { filterInvoices, hasActiveFilters, sortInvoices } from './utils/invoiceFilters'
+import { openInvoicePdf } from './utils/invoicePdf'
 import './App.css'
-import './components/ErpContable.css'
 
+const themes = [
+  { id: 'blue', label: 'Claro' },
+  { id: 'graphite', label: 'Oscuro' },
+]
 const navigation = [
   { key: 'dashboard', label: 'Dashboard', icon: '▦' },
   { key: 'new', label: 'Nueva factura', icon: '+' },
@@ -29,6 +33,8 @@ function App() {
   const [sortDir, setSortDir] = useState('desc')
   const [toast, setToast] = useState(null)
   const [confirmAnular, setConfirmAnular] = useState(false)
+  const [theme, setTheme] = useState('blue')
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false)
   const toastTimer = useRef(null)
 
   const showToast = (message) => {
@@ -81,6 +87,12 @@ function App() {
   const clients = [...new Set(invoices.map((invoice) => invoice.client.name))].sort()
   const nextInvoiceNumber = getNextInvoiceNumber(invoices)
   const existingNumbers = invoices.map((invoice) => invoice.invoiceNumber)
+  const handleDownloadInvoice = () => {
+    if (selectedInvoice && !openInvoicePdf(selectedInvoice)) {
+      showToast('Permite las ventanas emergentes para descargar la factura')
+    }
+  }
+
   const canMarkPaid = selectedInvoice?.status === 'emitida'
   const canAnular = selectedInvoice && selectedInvoice.status !== 'anulada'
   const activeNavigation = page === 'detail' ? 'list' : page
@@ -123,6 +135,7 @@ function App() {
         />
         <InvoiceList
           invoices={sortedInvoices}
+          allInvoices={invoices}
           selectedInvoice={selectedInvoice}
           onSelectInvoice={(invoice) => { setSelectedInvoice(invoice); navigate('detail') }}
           hasActiveFilters={hasActiveFilters(filters)}
@@ -141,6 +154,7 @@ function App() {
           actions={
             <>
               <button type="button" className="erp-btn" onClick={() => navigate('list')}>Volver a facturas</button>
+              {selectedInvoice && <button type="button" className="erp-btn erp-btn-primary" onClick={handleDownloadInvoice}>Descargar PDF</button>}
               {canMarkPaid && <button type="button" className="erp-btn" onClick={() => { updateInvoiceStatus(selectedInvoice.id, 'pagada'); showToast('Factura marcada como pagada') }}>Marcar como pagada</button>}
               {canAnular && <button type="button" className="erp-btn erp-btn-danger" onClick={() => confirmAnular ? (updateInvoiceStatus(selectedInvoice.id, 'anulada'), setConfirmAnular(false), showToast('Factura anulada')) : setConfirmAnular(true)}>{confirmAnular ? 'Confirmar anulación' : 'Anular'}</button>}
             </>
@@ -152,16 +166,49 @@ function App() {
   }
 
   return (
-    <div className="erp factura-erp">
+    <div className={`erp factura-erp theme-${theme}`}>
       <header className="erp-topbar">
         <div className="erp-brand">
-          <span className="erp-monogram">SF</span>
+          <img className="erp-brand-logo" src="/favicon.svg" alt="" />
           <div className="erp-brand-text">
             <span className="erp-brand-name">SISTEMA DE FACTURAS</span>
             <span className="erp-brand-sub">Facturación y gestión de cobros</span>
           </div>
         </div>
         <div className="erp-nodes"><div className="erp-node"><span className="erp-node-label">Estado</span><span className="erp-node-value erp-node-pac"><span className="erp-pulse" />Sistema en línea</span></div></div>
+        <div className="theme-picker">
+          <button
+            type="button"
+            className="theme-trigger"
+            aria-expanded={themeMenuOpen}
+            aria-controls="theme-options"
+            onClick={() => setThemeMenuOpen((open) => !open)}
+          >
+            <svg className="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+            <span className="sr-only">Elegir tema</span>
+          </button>
+          {themeMenuOpen && (
+            <div className="theme-options" id="theme-options">
+              {themes.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`theme-option${theme === item.id ? ' active' : ''}`}
+                  onClick={() => {
+                    setTheme(item.id)
+                    setThemeMenuOpen(false)
+                  }}
+                >
+                  <span className={`theme-swatch theme-swatch-${item.id}`} />
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </header>
       <div className="erp-body">
         <aside className="erp-sidebar">

@@ -21,16 +21,22 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
   const [clientTaxId, setClientTaxId] = useState('')
   const [invoiceNumber, setInvoiceNumber] = useState(nextNumber)
   const [invoiceDate, setInvoiceDate] = useState('')
+  const [taxRate, setTaxRate] = useState(String(TAX_RATE * 100))
   const [items, setItems] = useState([emptyItem()])
   const [errors, setErrors] = useState({})
   const [haciendaData, setHaciendaData] = useState(null)
   const [haciendaLoading, setHaciendaLoading] = useState(false)
   const [haciendaError, setHaciendaError] = useState('')
+  const [issuerHaciendaData, setIssuerHaciendaData] = useState(null)
+  const [issuerHaciendaLoading, setIssuerHaciendaLoading] = useState(false)
+  const [issuerHaciendaError, setIssuerHaciendaError] = useState('')
 
   const subtotal = getSubtotal(items)
-  const tax = getTax(subtotal)
+  const enteredTaxRate = Number(taxRate)
+  const appliedTaxRate = Number.isFinite(enteredTaxRate) ? enteredTaxRate / 100 : 0
+  const tax = getTax(subtotal, appliedTaxRate)
   const total = getTotal(subtotal, tax)
-  const taxPercent = Math.round(TAX_RATE * 100)
+  const taxPercent = enteredTaxRate || 0
 
   const handleItemChange = (index, field, value) => {
     setItems((prevItems) =>
@@ -70,6 +76,35 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
     }
   }
 
+  const consultarEmisor = async () => {
+    if (!cleanIdentificacion(issuerTaxId)) {
+      setIssuerHaciendaError('Ingresa la identificación fiscal del emisor primero')
+      setIssuerHaciendaData(null)
+      return
+    }
+
+    setIssuerHaciendaLoading(true)
+    setIssuerHaciendaError('')
+    setIssuerHaciendaData(null)
+
+    try {
+      const data = await lookupByIdentificacion(issuerTaxId)
+      setIssuerHaciendaData(data)
+      if (data.nombre) setIssuerName(data.nombre)
+      setErrors((prev) => ({ ...prev, issuerName: '', issuerTaxId: '' }))
+    } catch (err) {
+      setIssuerHaciendaError(err.message)
+      setIssuerHaciendaData(null)
+    } finally {
+      setIssuerHaciendaLoading(false)
+    }
+  }
+
+  const handleIssuerTaxIdChange = (value) => {
+    setIssuerTaxId(value)
+    setIssuerHaciendaError('')
+    setIssuerHaciendaData(null)
+  }
   const handleCedulaChange = (value) => {
     setClientTaxId(value)
     setHaciendaError('')
@@ -88,6 +123,9 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
     else if (existingNumbers.includes(invoiceNumber.trim()))
       newErrors.invoiceNumber = 'El número de factura ya existe'
     if (!invoiceDate) newErrors.invoiceDate = 'La fecha de emisión es obligatoria'
+    if (taxRate === '' || !Number.isFinite(enteredTaxRate) || enteredTaxRate < 0 || enteredTaxRate > 100) {
+      newErrors.taxRate = 'El impuesto debe estar entre 0 y 100'
+    }
 
     const itemErrors = items.map((item) => {
       const err = {}
@@ -131,6 +169,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
       },
       invoiceNumber: invoiceNumber.trim(),
       date: invoiceDate,
+      taxRate: appliedTaxRate,
       status: 'emitida',
       items: items.map((item) => ({
         id: item.id,
@@ -149,10 +188,13 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
     setClientTaxId('')
     setInvoiceNumber('')
     setInvoiceDate('')
+    setTaxRate(String(TAX_RATE * 100))
     setItems([emptyItem()])
     setErrors({})
     setHaciendaData(null)
     setHaciendaError('')
+    setIssuerHaciendaData(null)
+    setIssuerHaciendaError('')
   }
 
   return (
@@ -162,6 +204,43 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
       <section className="form-section">
         <h3 className="form-section-title">Datos del emisor</h3>
         <div className="form-grid">
+          <div className="field cedula-field">
+            <label htmlFor="issuerTaxId">Identificación fiscal</label>
+            <div className="cedula-lookup">
+              <input
+                id="issuerTaxId"
+                type="text"
+                placeholder="Ej. 3101123456"
+                value={issuerTaxId}
+                onChange={(e) => handleIssuerTaxIdChange(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    consultarEmisor()
+                  }
+                }}
+                className={errors.issuerTaxId ? 'input-error' : ''}
+              />
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={consultarEmisor}
+                disabled={issuerHaciendaLoading}
+              >
+                {issuerHaciendaLoading ? 'Consultando…' : 'Consultar Hacienda'}
+              </button>
+            </div>
+            {errors.issuerTaxId && <p className="error">{errors.issuerTaxId}</p>}
+            {issuerHaciendaError && <p className="error">{issuerHaciendaError}</p>}
+            {issuerHaciendaData && (
+              <div className="hacienda-chip">
+                <span className="hacienda-chip-name">{issuerHaciendaData.nombre}</span>
+                <span className="hacienda-chip-tag">
+                  {tipoIdentificacionLabel(issuerHaciendaData.tipoIdentificacion)}
+                </span>
+              </div>
+            )}
+          </div>
           <div className="field">
             <label htmlFor="issuerName">Nombre de la empresa</label>
             <input
@@ -172,17 +251,6 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
               className={errors.issuerName ? 'input-error' : ''}
             />
             {errors.issuerName && <p className="error">{errors.issuerName}</p>}
-          </div>
-          <div className="field">
-            <label htmlFor="issuerTaxId">RUC/NIT/ID fiscal</label>
-            <input
-              id="issuerTaxId"
-              type="text"
-              value={issuerTaxId}
-              onChange={(e) => setIssuerTaxId(e.target.value)}
-              className={errors.issuerTaxId ? 'input-error' : ''}
-            />
-            {errors.issuerTaxId && <p className="error">{errors.issuerTaxId}</p>}
           </div>
         </div>
       </section>
@@ -294,7 +362,20 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
             />
             {errors.invoiceDate && <p className="error">{errors.invoiceDate}</p>}
           </div>
-        </div>
+                  <div className="field">
+            <label htmlFor="taxRate">Impuesto (%)</label>
+            <input
+              id="taxRate"
+              type="number"
+              min="0"
+              max="100"
+              step="0.01"
+              value={taxRate}
+              onChange={(e) => setTaxRate(e.target.value)}
+              className={errors.taxRate ? 'input-error' : ''}
+            />
+            {errors.taxRate && <p className="error">{errors.taxRate}</p>}
+          </div>        </div>
       </section>
 
       <section className="form-section">

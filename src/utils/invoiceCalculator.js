@@ -7,20 +7,17 @@ export const getLineTotal = (item) => {
   return quantity * unitPrice
 }
 
-export const getSubtotal = (items) =>
-  items.reduce((sum, item) => sum + getLineTotal(item), 0)
+export const getSubtotal = (items) => items.reduce((sum, item) => sum + getLineTotal(item), 0)
 
-export const getTax = (subtotal) => subtotal * TAX_RATE
+export const getTax = (subtotal, taxRate = TAX_RATE) => subtotal * taxRate
 
 export const getTotal = (subtotal, tax) => subtotal + tax
 
 export const getInvoiceTotal = (invoice) => {
+  const taxRate = Number.isFinite(Number(invoice.taxRate)) ? Number(invoice.taxRate) : TAX_RATE
   const subtotal = getSubtotal(invoice.items)
-  return getTotal(subtotal, getTax(subtotal))
+  return getTotal(subtotal, getTax(subtotal, taxRate))
 }
 
 export const formatMoney = (value) =>
-  `$${value.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`
+  `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`

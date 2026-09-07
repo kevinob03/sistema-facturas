@@ -3,6 +3,7 @@ import StatusBadge from './StatusBadge'
 
 function InvoiceList({
   invoices,
+  allInvoices = invoices,
   selectedInvoice,
   onSelectInvoice,
   hasActiveFilters,
@@ -10,13 +11,18 @@ function InvoiceList({
   sortDir,
   onSort,
 }) {
+  const vigentes = allInvoices.filter((invoice) => invoice.status !== 'anulada')
+  const promedioVigente = vigentes.length
+    ? vigentes.reduce((sum, invoice) => sum + getInvoiceTotal(invoice), 0) / vigentes.length
+    : 0
+  const umbralAtipico = promedioVigente * 1.75
+  const isAtypical = (invoice) =>
+    vigentes.length >= 3 && invoice.status !== 'anulada' && getInvoiceTotal(invoice) >= umbralAtipico
+
   const renderSortHeader = (label, key, className = '') => {
     const active = sortKey === key
     return (
-      <th
-        className={`${className} sortable${active ? ' sort-active' : ''}`}
-        onClick={() => onSort(key)}
-      >
+      <th className={`${className} sortable${active ? ' sort-active' : ''}`} onClick={() => onSort(key)}>
         {label}
         <span className="sort-arrow">{active ? (sortDir === 'asc' ? '↑' : '↓') : ''}</span>
       </th>
@@ -27,9 +33,7 @@ function InvoiceList({
     <div className="invoice-list card">
       <header className="card-header">
         <h2>Facturas registradas</h2>
-        <span className="count-badge">
-          {invoices.length} facturas
-        </span>
+        <span className="count-badge">{invoices.length} facturas</span>
       </header>
 
       {invoices.length === 0 ? (
@@ -49,21 +53,25 @@ function InvoiceList({
               </tr>
             </thead>
             <tbody>
-              {invoices.map((invoice) => (
-                <tr
-                  key={invoice.id}
-                  className={selectedInvoice?.id === invoice.id ? 'selected' : ''}
-                  onClick={() => onSelectInvoice(invoice)}
-                >
-                  <td className="cell-number">{invoice.invoiceNumber}</td>
-                  <td>{invoice.client.name}</td>
-                  <td>{invoice.date}</td>
-                  <td className="align-right cell-total">{formatMoney(getInvoiceTotal(invoice))}</td>
-                  <td>
-                    <StatusBadge status={invoice.status} />
-                  </td>
-                </tr>
-              ))}
+              {invoices.map((invoice) => {
+                const atypical = isAtypical(invoice)
+                return (
+                  <tr
+                    key={invoice.id}
+                    className={`${selectedInvoice?.id === invoice.id ? 'selected ' : ''}${atypical ? 'invoice-atypical' : ''}`.trim()}
+                    onClick={() => onSelectInvoice(invoice)}
+                  >
+                    <td className="cell-number">
+                      <span>{invoice.invoiceNumber}</span>
+                      {atypical && <span className="atypical-flag" title="Importe significativamente mayor al promedio vigente">Atípica</span>}
+                    </td>
+                    <td>{invoice.client.name}</td>
+                    <td>{invoice.date}</td>
+                    <td className="align-right cell-total">{formatMoney(getInvoiceTotal(invoice))}</td>
+                    <td><StatusBadge status={invoice.status} /></td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
