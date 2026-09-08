@@ -232,7 +232,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], prel
       <form className="invoice-form card" onSubmit={handleSubmit}>
         <h2 className="form-title">Nueva factura</h2>
 
-      <section className="form-section">
+      <section className="form-section form-section-emisor">
         <h3 className="form-section-title">Datos del emisor</h3>
         <div className="form-grid">
           <div className="field cedula-field">
@@ -286,7 +286,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], prel
         </div>
       </section>
 
-      <section className="form-section">
+      <section className="form-section form-section-cliente">
         <h3 className="form-section-title">Datos del cliente</h3>
         <div className="form-grid">
           <div className="field cedula-field">
@@ -368,7 +368,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], prel
         </div>
       </section>
 
-      <section className="form-section">
+      <section className="form-section form-section-datos">
         <h3 className="form-section-title">Datos de la factura</h3>
         <div className="form-grid">
           <div className="field">
@@ -409,7 +409,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], prel
           </div>        </div>
       </section>
 
-      <section className="form-section">
+      <section className="form-section form-section-items">
         <h3 className="form-section-title">Ítems</h3>
 
         <div className="items-header">

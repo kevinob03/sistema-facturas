@@ -2353,4 +2353,211 @@
     bottom: 74px;
     height: 480px;
   }
-}
+}
+
+/* ==========================================================
+   SISTEMA DE TOUR / TUTORIAL GUIADO (DRIVER.JS CUSTOM)
+   ========================================================== */
+
+/* Botón de Tour en Topbar */
+.tour-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  margin-right: 8px;
+  border: 1px solid var(--erp-border);
+  border-radius: 4px;
+  background: var(--erp-surface);
+  color: var(--erp-text);
+  font: 600 11.5px system-ui, sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tour-btn:hover {
+  background: var(--erp-cell);
+  border-color: #3b82f6;
+  color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.tour-btn-icon {
+  font-size: 13px;
+}
+
+/* Personalización Popover Driver.js (100% OPACO, SIN TRANSPARENCIA) */
+.driver-popover.factura-tour-popover {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  opacity: 1 !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+  padding: 18px 20px !important;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.28), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  font-family: inherit !important;
+  max-width: 360px !important;
+  z-index: 1000000000 !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-title {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin-bottom: 8px !important;
+  line-height: 1.35 !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-description {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: #334155 !important;
+  margin-bottom: 14px !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-top: 12px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-progress-text {
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  color: #64748b !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-navigation-btns {
+  display: flex !important;
+  gap: 8px !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-prev-btn {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  padding: 6px 12px !important;
+  cursor: pointer !important;
+  text-shadow: none !important;
+  transition: background 0.15s !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-prev-btn:hover:not(:disabled) {
+  background: #e2e8f0 !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-next-btn {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  padding: 6px 14px !important;
+  cursor: pointer !important;
+  text-shadow: none !important;
+  transition: opacity 0.15s, background 0.15s !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-next-btn:hover {
+  background: #1d4ed8 !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-close-btn {
+  color: #64748b !important;
+  font-size: 18px !important;
+  top: 12px !important;
+  right: 14px !important;
+  cursor: pointer !important;
+  transition: color 0.15s !important;
+}
+
+.driver-popover.factura-tour-popover .driver-popover-close-btn:hover {
+  color: #0f172a !important;
+}
+
+/* Flechas sólidas de Driver.js */
+.driver-popover.factura-tour-popover .driver-popover-arrow-side-top {
+  border-top-color: #ffffff !important;
+}
+.driver-popover.factura-tour-popover .driver-popover-arrow-side-bottom {
+  border-bottom-color: #ffffff !important;
+}
+.driver-popover.factura-tour-popover .driver-popover-arrow-side-left {
+  border-left-color: #ffffff !important;
+}
+.driver-popover.factura-tour-popover .driver-popover-arrow-side-right {
+  border-right-color: #ffffff !important;
+}
+
+/* Tema Grafito (Modo Oscuro) para Driver.js */
+.factura-erp.theme-graphite .tour-btn {
+  background: #111827;
+  border-color: #374151;
+  color: #f1f5f9;
+}
+
+.factura-erp.theme-graphite .tour-btn:hover {
+  background: #1f2937;
+  border-color: #60a5fa;
+  color: #60a5fa;
+}
+
+body.theme-graphite .driver-popover.factura-tour-popover,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover,
+.theme-graphite .driver-popover.factura-tour-popover {
+  background-color: #0f172a !important;
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 0 1px #334155 !important;
+}
+
+body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-title,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-title {
+  color: #f8fafc !important;
+}
+
+body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-description,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-description {
+  color: #94a3b8 !important;
+}
+
+body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-footer,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-footer {
+  border-top-color: #1e293b !important;
+}
+
+body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-prev-btn,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-prev-btn {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-arrow-side-top,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-arrow-side-top {
+  border-top-color: #0f172a !important;
+}
+body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-arrow-side-bottom,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-arrow-side-bottom {
+  border-bottom-color: #0f172a !important;
+}
+body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-arrow-side-left,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-arrow-side-left {
+  border-left-color: #0f172a !important;
+}
+body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-arrow-side-right,
+body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-arrow-side-right {
+  border-right-color: #0f172a !important;
+}
+

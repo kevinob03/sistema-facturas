@@ -6,6 +6,8 @@ import Invoice from './components/Invoice'
 import Dashboard from './components/Dashboard'
 import Toast from './components/Toast'
 import AiAssistantModal from './components/AiAssistantModal'
+import TourButton from './components/TourButton'
+import { useTour } from './hooks/useTour'
 import demoInvoices from './data/demoInvoices'
 import { getNextInvoiceNumber } from './utils/invoiceSequence'
 import { filterInvoices, hasActiveFilters, sortInvoices } from './utils/invoiceFilters'
@@ -39,6 +41,8 @@ function App() {
   const [themeMenuOpen, setThemeMenuOpen] = useState(false)
   const toastTimer = useRef(null)
 
+  const { startTour } = useTour({ activePage: page, autoStart: true })
+
   const showToast = (message) => {
     setToast(message)
     clearTimeout(toastTimer.current)
@@ -46,6 +50,12 @@ function App() {
   }
 
   useEffect(() => () => clearTimeout(toastTimer.current), [])
+
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme)
+    document.body.classList.remove('theme-blue', 'theme-graphite')
+    document.body.classList.add(`theme-${theme}`)
+  }, [theme])
 
   const navigate = (nextPage) => {
     setConfirmAnular(false)
@@ -190,6 +200,7 @@ function App() {
           </div>
         </div>
         <div className="erp-nodes"><div className="erp-node"><span className="erp-node-label">Estado</span><span className="erp-node-value erp-node-pac"><span className="erp-pulse" />Sistema en línea</span></div></div>
+        <TourButton onClick={() => startTour(page, true)} />
         <div className="theme-picker">
           <button
             type="button"
