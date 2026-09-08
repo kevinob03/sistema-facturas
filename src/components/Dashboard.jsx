@@ -1,7 +1,8 @@
 import { getInvoiceTotal, formatMoney } from '../utils/invoiceCalculator'
+import { generateFinancialAudit } from '../utils/aiEngine'
 import StatusBadge from './StatusBadge'
 
-function Dashboard({ invoices }) {
+function Dashboard({ invoices, onNavigate, onFilterStatus }) {
   const totalInvoices = invoices.length
   const totalBilled = invoices.reduce((sum, invoice) => sum + getInvoiceTotal(invoice), 0)
   const averageTotal = totalInvoices === 0 ? 0 : totalBilled / totalInvoices
@@ -59,6 +60,8 @@ function Dashboard({ invoices }) {
     .slice(0, 5)
   const maxClient = Math.max(...topClients.map((client) => client.total), 1)
 
+  const audit = generateFinancialAudit(invoices)
+
   return (
     <div className="dashboard">
       <div className="metrics">
@@ -80,6 +83,49 @@ function Dashboard({ invoices }) {
           <span className="metric-foot">Basada en {daysElapsed} de {daysInMonth} días</span>
         </div>
       </div>
+
+      {/* Diagnóstico Estratégico IA */}
+      <section className="card ai-audit-card">
+        <div className="ai-audit-head">
+          <div className="ai-audit-title">
+            <span className="ai-sparkle-icon">✨</span>
+            <div>
+              <h2 className="chart-title">Diagnóstico Financiero & Recomendaciones IA</h2>
+              <p className="ai-audit-sub">Análisis en tiempo real de cartera, concentración y liquidez</p>
+            </div>
+          </div>
+          <div className="ai-health-score-badge">
+            <span className="ai-score-label">Salud de Cartera</span>
+            <strong className="ai-score-number">{audit.healthScore}%</strong>
+          </div>
+        </div>
+
+        <div className="ai-insights-grid">
+          {audit.insights.map((ins, i) => (
+            <div key={i} className={`ai-insight-item insight-${ins.level}`}>
+              <div className="ai-insight-header">
+                <span className="ai-insight-badge">
+                  {ins.level === 'warning' ? '⚠️ Atención' : ins.level === 'success' ? '✓ Saludable' : 'ℹ️ Dato clave'}
+                </span>
+                <strong className="ai-insight-title">{ins.title}</strong>
+              </div>
+              <p className="ai-insight-desc">{ins.text}</p>
+              {ins.action === 'Enviar recordatorios' && onFilterStatus && onNavigate && (
+                <button
+                  type="button"
+                  className="ai-insight-action-btn"
+                  onClick={() => {
+                    onFilterStatus('emitida')
+                    onNavigate('list')
+                  }}
+                >
+                  ⚡ Ver facturas por cobrar
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
 
       <section className="card projection-card">
         <div>

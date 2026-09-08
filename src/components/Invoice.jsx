@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   TAX_RATE,
   getSubtotal,
@@ -7,8 +8,10 @@ import {
   formatMoney,
 } from '../utils/invoiceCalculator'
 import StatusBadge from './StatusBadge'
+import AiReminderModal from './AiReminderModal'
 
-function Invoice({ selectedInvoice }) {
+function Invoice({ selectedInvoice, onShowToast }) {
+  const [reminderOpen, setReminderOpen] = useState(false)
   if (!selectedInvoice) {
     return (
       <div className="invoice card">
@@ -46,6 +49,25 @@ function Invoice({ selectedInvoice }) {
             </p>
           </div>
         </header>
+
+        {selectedInvoice.status === 'emitida' && (
+          <div className="invoice-ai-banner">
+            <div className="invoice-ai-banner-text">
+              <span className="ai-sparkle-icon">✨</span>
+              <div>
+                <strong>Factura pendiente de cobro</strong>
+                <p>Genera un recordatorio de cobranza con IA para WhatsApp o Correo.</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="erp-btn erp-btn-primary invoice-ai-btn"
+              onClick={() => setReminderOpen(true)}
+            >
+              ✨ Redactar recordatorio
+            </button>
+          </div>
+        )}
 
         <section className="invoice-client">
           <h3>Facturado a</h3>
@@ -92,6 +114,12 @@ function Invoice({ selectedInvoice }) {
           </div>
         </div>
       </div>
+      <AiReminderModal
+        invoice={selectedInvoice}
+        isOpen={reminderOpen}
+        onClose={() => setReminderOpen(false)}
+        onCopySuccess={onShowToast}
+      />
     </div>
   )
 }
