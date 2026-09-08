@@ -5,13 +5,14 @@ import {
   saveGeminiApiKey,
 } from '../utils/aiEngine'
 import { formatMoney } from '../utils/invoiceCalculator'
+import AppIcon from './AppIcon'
 
 const QUICK_PROMPTS = [
-  '📊 Resumen general',
+  ' Resumen general',
   '⏳ Facturas pendientes',
-  '⚡ Crear factura rápida',
-  '🏆 ¿Quién es el mejor cliente?',
-  '💡 Diagnóstico de cartera',
+  ' Crear factura rápida',
+  ' ¿Quién es el mejor cliente?',
+  ' Diagnóstico de cartera',
 ]
 
 function AiAssistantModal({
@@ -34,7 +35,7 @@ function AiAssistantModal({
       sender: 'ai',
       text: '¡Hola! Soy tu **Copiloto de Facturación**. Puedes pedirme que cree facturas, consulte cobranzas pendientes o analice tus métricas financieras.',
       actions: [
-        { label: '📊 Resumen general', action: 'NAVIGATE', payload: 'dashboard' },
+        { label: ' Resumen general', action: 'NAVIGATE', payload: 'dashboard' },
         { label: '⏳ Facturas pendientes', action: 'FILTER_STATUS', payload: 'emitida' },
       ],
     },
@@ -136,7 +137,7 @@ function AiAssistantModal({
         onClick={() => setIsOpen(!isOpen)}
         title="Copiloto de IA para Facturación"
       >
-        <span className="ai-trigger-sparkle">✨</span>
+        <span className="ai-trigger-sparkle"><AppIcon name="sparkles" size={15} /></span>
         <span className="ai-trigger-label">Copiloto IA</span>
         <span className="ai-trigger-status" title={activeKey ? 'Conectado a Gemini' : 'Motor local activo'} />
       </button>
@@ -146,7 +147,7 @@ function AiAssistantModal({
         <div className="ai-copilot-panel card">
           <div className="ai-copilot-header">
             <div className="ai-copilot-brand">
-              <span className="ai-copilot-avatar">✨</span>
+              <span className="ai-copilot-avatar"><AppIcon name="sparkles" size={17} /></span>
               <div>
                 <span className="ai-copilot-title">Copiloto Inteligente</span>
                 <span className="ai-copilot-badge">
@@ -161,7 +162,7 @@ function AiAssistantModal({
                 title="Configuración de IA"
                 onClick={() => setShowSettings(!showSettings)}
               >
-                ⚙️
+                ️
               </button>
               <button
                 type="button"
@@ -169,7 +170,7 @@ function AiAssistantModal({
                 title="Cerrar Copiloto"
                 onClick={() => setIsOpen(false)}
               >
-                ✕
+                
               </button>
             </div>
           </div>
@@ -296,7 +297,7 @@ function AiAssistantModal({
               disabled={loading || !input.trim()}
               aria-label="Enviar"
             >
-              ➤
+              
             </button>
           </form>
         </div>

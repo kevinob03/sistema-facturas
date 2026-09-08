@@ -31,6 +31,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], prel
   const [issuerHaciendaData, setIssuerHaciendaData] = useState(null)
   const [issuerHaciendaLoading, setIssuerHaciendaLoading] = useState(false)
   const [issuerHaciendaError, setIssuerHaciendaError] = useState('')
+  const [activeParty, setActiveParty] = useState('issuer')
 
   const subtotal = getSubtotal(items)
   const enteredTaxRate = Number(taxRate)
@@ -232,6 +233,29 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], prel
       <form className="invoice-form card" onSubmit={handleSubmit}>
         <h2 className="form-title">Nueva factura</h2>
 
+      <section className="party-selector" aria-label="Datos de la factura">
+        <div className="party-selector-controls" role="tablist" aria-label="Seleccionar datos">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeParty === 'issuer'}
+            className={activeParty === 'issuer' ? 'party-selector-button is-active' : 'party-selector-button'}
+            onClick={() => setActiveParty('issuer')}
+          >
+            Empresa
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeParty === 'client'}
+            className={activeParty === 'client' ? 'party-selector-button is-active' : 'party-selector-button'}
+            onClick={() => setActiveParty('client')}
+          >
+            Cliente
+          </button>
+        </div>
+
+      {activeParty === 'issuer' ? (
       <section className="form-section form-section-emisor">
         <h3 className="form-section-title">Datos del emisor</h3>
         <div className="form-grid">
@@ -285,7 +309,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], prel
           </div>
         </div>
       </section>
-
+      ) : (
       <section className="form-section form-section-cliente">
         <h3 className="form-section-title">Datos del cliente</h3>
         <div className="form-grid">
@@ -366,6 +390,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], prel
             {errors.clientContact && <p className="error">{errors.clientContact}</p>}
           </div>
         </div>
+      </section>      )}
       </section>
 
       <section className="form-section form-section-datos">

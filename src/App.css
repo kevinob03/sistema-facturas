@@ -2560,4 +2560,264 @@ body.theme-graphite .driver-popover.factura-tour-popover .driver-popover-arrow-s
 body[data-theme="graphite"] .driver-popover.factura-tour-popover .driver-popover-arrow-side-right {
   border-right-color: #0f172a !important;
 }
-
+
+.party-selector {
+  margin-bottom: 18px;
+}
+
+.party-selector-controls {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 10px;
+  border: 1px solid var(--erp-border, var(--border));
+  border-radius: 9px;
+  background: var(--erp-surface-alt, var(--surface-subtle));
+}
+
+.party-selector-button {
+  min-height: 32px;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--erp-muted, var(--text-muted));
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.party-selector-button:hover {
+  color: var(--erp-text, var(--text));
+}
+
+.party-selector-button.is-active {
+  background: var(--erp-accent, var(--primary));
+  color: #fff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 18%);
+}
+/* Ajustes de uso en teléfono */
+@media (max-width: 640px) {
+  .factura-erp {
+    min-height: 100dvh;
+  }
+
+  .factura-erp .erp-topbar {
+    height: auto;
+    min-height: 56px;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .factura-erp .erp-brand {
+    min-width: 0;
+    gap: 7px;
+  }
+
+  .factura-erp .erp-brand-logo {
+    width: 27px;
+    height: 27px;
+  }
+
+  .factura-erp .erp-brand-name {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .factura-erp .tour-btn {
+    width: 32px;
+    height: 36px;
+    padding: 0;
+    margin: 0 0 0 auto;
+    justify-content: center;
+  }
+
+  .factura-erp .tour-btn-text {
+    display: none;
+  }
+
+  .factura-erp .theme-picker {
+    margin-left: 0;
+  }
+
+  .factura-erp .theme-trigger {
+    width: 36px;
+    height: 36px;
+  }
+
+  .factura-erp .erp-body {
+    flex-direction: column;
+  }
+
+  .factura-erp .erp-sidebar {
+    width: 100%;
+    border-right: 0;
+    border-bottom: 1px solid var(--erp-sidebar-border);
+  }
+
+  .factura-erp .erp-side-head {
+    display: none;
+  }
+
+  .factura-erp .erp-side-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    padding: 5px 8px;
+  }
+
+  .factura-erp .erp-side-label {
+    display: none;
+  }
+
+  .factura-erp .erp-side-item,
+  .factura-erp .erp-side-item > span:last-child {
+    display: inline-flex;
+  }
+
+  .factura-erp .erp-side-item {
+    min-width: 0;
+    height: 42px;
+    margin: 0;
+    padding: 0 6px;
+    justify-content: center;
+    gap: 5px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .factura-erp .erp-side-icon {
+    width: auto;
+    font-size: 13px;
+  }
+
+  .factura-erp .erp-main,
+  .factura-erp .legacy-erp-content {
+    padding: 12px;
+    overflow: visible;
+  }
+
+  .factura-erp .erp-view-head {
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .factura-erp .erp-view-title {
+    font-size: 18px;
+  }
+
+  .factura-erp .erp-view-actions {
+    width: 100%;
+  }
+
+  .factura-erp .erp-view-actions .erp-btn {
+    flex: 1 1 130px;
+    min-height: 42px;
+  }
+
+  .factura-erp .invoice-form {
+    padding: 12px;
+  }
+
+  .factura-erp .form-section {
+    padding: 12px;
+  }
+
+  .factura-erp .cedula-lookup {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .factura-erp .cedula-lookup .btn-secondary,
+  .factura-erp .form-actions .btn-primary {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .factura-erp .party-selector-controls {
+    display: flex;
+    width: 100%;
+  }
+
+  .factura-erp .party-selector-button {
+    flex: 1;
+    min-height: 40px;
+  }
+
+  .factura-erp .item-line {
+    gap: 10px;
+  }
+
+  .factura-erp .item-line .btn-remove {
+    min-height: 38px;
+  }
+
+  .factura-erp .form-summary {
+    max-width: none;
+  }
+
+  .factura-erp .card-header {
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .factura-erp .table-wrap {
+    margin: 0 -12px;
+    padding: 0 12px 4px;
+  }
+
+  .factura-erp .invoice-table,
+  .factura-erp .invoice-items-table {
+    min-width: 620px;
+  }
+
+  .factura-erp .invoice-header,
+  .factura-erp .ai-audit-head,
+  .factura-erp .ai-audit-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .factura-erp .ai-health-score-badge {
+    align-self: stretch;
+  }
+
+  .factura-erp .ai-insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .factura-erp .ai-copilot-panel {
+    right: 10px;
+    bottom: 72px;
+    left: 10px;
+    width: auto;
+    height: min(560px, calc(100dvh - 94px));
+    max-height: calc(100dvh - 94px);
+    border-radius: 12px;
+  }
+
+  .factura-erp .ai-floating-trigger {
+    right: 14px;
+    bottom: 14px;
+    min-width: 46px;
+    min-height: 46px;
+    justify-content: center;
+  }
+
+  .driver-popover.factura-tour-popover {
+    max-width: calc(100vw - 24px) !important;
+    padding: 15px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .factura-erp .erp-brand-name {
+    display: none;
+  }
+
+  .factura-erp .erp-side-item {
+    font-size: 10px;
+  }
+}

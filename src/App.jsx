@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import InvoiceForm from './components/InvoiceForm'
 import InvoiceFilters from './components/InvoiceFilters'
 import InvoiceList from './components/InvoiceList'
@@ -39,9 +39,14 @@ function App() {
   const [confirmAnular, setConfirmAnular] = useState(false)
   const [theme, setTheme] = useState('blue')
   const [themeMenuOpen, setThemeMenuOpen] = useState(false)
+  const [aiCloseRequest, setAiCloseRequest] = useState(0)
   const toastTimer = useRef(null)
 
-  const { startTour } = useTour({ activePage: page, autoStart: true })
+  const closeAiForTour = useCallback(() => {
+    setAiCloseRequest((request) => request + 1)
+  }, [])
+
+  const { startTour } = useTour({ activePage: page, autoStart: true, onStart: closeAiForTour })
 
   const showToast = (message) => {
     setToast(message)
@@ -246,6 +251,7 @@ function App() {
         <main className="erp-main legacy-erp-content">{content}</main>
       </div>
       <AiAssistantModal
+        key={aiCloseRequest}
         invoices={invoices}
         onNavigate={navigate}
         onPreloadInvoice={(data) => {
