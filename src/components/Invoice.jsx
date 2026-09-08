@@ -9,6 +9,7 @@ import {
 } from '../utils/invoiceCalculator'
 import StatusBadge from './StatusBadge'
 import AiReminderModal from './AiReminderModal'
+import AppIcon from './AppIcon'
 
 function Invoice({ selectedInvoice, onShowToast }) {
   const [reminderOpen, setReminderOpen] = useState(false)
@@ -53,7 +54,7 @@ function Invoice({ selectedInvoice, onShowToast }) {
         {selectedInvoice.status === 'emitida' && (
           <div className="invoice-ai-banner">
             <div className="invoice-ai-banner-text">
-              <span className="ai-sparkle-icon">✨</span>
+              <span className="ai-sparkle-icon"><AppIcon name="sparkles" size={16} /></span>
               <div>
                 <strong>Factura pendiente de cobro</strong>
                 <p>Genera un recordatorio de cobranza con IA para WhatsApp o Correo.</p>
@@ -64,7 +65,7 @@ function Invoice({ selectedInvoice, onShowToast }) {
               className="erp-btn erp-btn-primary invoice-ai-btn"
               onClick={() => setReminderOpen(true)}
             >
-              ✨ Redactar recordatorio
+              <AppIcon name="sparkles" size={14} /> Redactar recordatorio
             </button>
           </div>
         )}

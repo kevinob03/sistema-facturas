@@ -278,7 +278,7 @@ export const processCopilotMessage = async ({ query, invoices }) => {
       text: `He preparado los datos de la factura con base en tu solicitud para **${extracted.clientName || 'Cliente nuevo'}**:`,
       data: extracted,
       actions: [
-        { label: '⚡ Cargar en formulario', action: 'FILL_FORM', payload: extracted },
+        { label: ' Cargar en formulario', action: 'FILL_FORM', payload: extracted },
         { label: 'Ir a Nueva Factura', action: 'NAVIGATE', payload: 'new' },
       ],
     }
@@ -381,9 +381,9 @@ Responde de manera concisa, profesional, amable y orientada a la acción en espa
       `• **Analizar clientes:** *"¿Quién es el mejor cliente?"*\n` +
       `• **Métricas generales:** *"Resumen financiero total"*`,
     actions: [
-      { label: '📊 Resumen general', action: 'NAVIGATE', payload: 'dashboard' },
+      { label: ' Resumen general', action: 'NAVIGATE', payload: 'dashboard' },
       { label: '⏳ Ver facturas por cobrar', action: 'FILTER_STATUS', payload: 'emitida' },
-      { label: '⚡ Nueva factura', action: 'NAVIGATE', payload: 'new' },
+      { label: ' Nueva factura', action: 'NAVIGATE', payload: 'new' },
     ],
   }
 }

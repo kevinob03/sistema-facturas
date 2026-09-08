@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { parseInvoiceWithAi } from '../utils/aiEngine'
+import AppIcon from './AppIcon'
 
 const EXAMPLES = [
   'Facturar a María López 2 monitores a 180 y 1 mouse a 25 con IVA 13%',
@@ -32,7 +33,7 @@ function AiQuickInvoiceBar({ onFillForm }) {
     <div className="ai-quick-bar card">
       <div className="ai-quick-header" onClick={() => setIsExpanded(!isExpanded)}>
         <div className="ai-quick-title">
-          <span className="ai-sparkle-icon">✨</span>
+          <span className="ai-sparkle-icon"><AppIcon name="sparkles" size={16} /></span>
           <div>
             <strong>Facturación Rápida con IA</strong>
             <p className="ai-quick-sub">
@@ -77,7 +78,7 @@ function AiQuickInvoiceBar({ onFillForm }) {
                   <span className="ai-spinner" /> Procesando…
                 </>
               ) : (
-                <>✨ Autocompletar</>
+                <> Autocompletar</>
               )}
             </button>
           </div>

@@ -1,6 +1,7 @@
 import { getInvoiceTotal, formatMoney } from '../utils/invoiceCalculator'
 import { generateFinancialAudit } from '../utils/aiEngine'
 import StatusBadge from './StatusBadge'
+import AppIcon from './AppIcon'
 
 function Dashboard({ invoices, onNavigate, onFilterStatus }) {
   const totalInvoices = invoices.length
@@ -88,7 +89,7 @@ function Dashboard({ invoices, onNavigate, onFilterStatus }) {
       <section className="card ai-audit-card">
         <div className="ai-audit-head">
           <div className="ai-audit-title">
-            <span className="ai-sparkle-icon">✨</span>
+            <span className="ai-sparkle-icon"><AppIcon name="sparkles" size={16} /></span>
             <div>
               <h2 className="chart-title">Diagnóstico Financiero & Recomendaciones IA</h2>
               <p className="ai-audit-sub">Análisis en tiempo real de cartera, concentración y liquidez</p>
@@ -105,7 +106,7 @@ function Dashboard({ invoices, onNavigate, onFilterStatus }) {
             <div key={i} className={`ai-insight-item insight-${ins.level}`}>
               <div className="ai-insight-header">
                 <span className="ai-insight-badge">
-                  {ins.level === 'warning' ? '⚠️ Atención' : ins.level === 'success' ? '✓ Saludable' : 'ℹ️ Dato clave'}
+                  {ins.level === 'warning' ? '️ Atención' : ins.level === 'success' ? ' Saludable' : 'ℹ️ Dato clave'}
                 </span>
                 <strong className="ai-insight-title">{ins.title}</strong>
               </div>
@@ -119,7 +120,7 @@ function Dashboard({ invoices, onNavigate, onFilterStatus }) {
                     onNavigate('list')
                   }}
                 >
-                  ⚡ Ver facturas por cobrar
+                   Ver facturas por cobrar
                 </button>
               )}
             </div>

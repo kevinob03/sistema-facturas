@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { generatePaymentReminder } from '../utils/aiEngine'
+import AppIcon from './AppIcon'
 
 function AiReminderModal({ invoice, isOpen, onClose, onCopySuccess }) {
   const [tone, setTone] = useState('amable')
@@ -36,7 +37,7 @@ function AiReminderModal({ invoice, isOpen, onClose, onCopySuccess }) {
       <div className="ai-modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="ai-modal-header">
           <div className="ai-modal-title">
-            <span className="ai-sparkle-icon">✨</span>
+            <span className="ai-sparkle-icon"><AppIcon name="sparkles" size={16} /></span>
             <div>
               <h3>Redactor Inteligente de Cobro</h3>
               <p className="ai-modal-sub">
@@ -45,7 +46,7 @@ function AiReminderModal({ invoice, isOpen, onClose, onCopySuccess }) {
             </div>
           </div>
           <button type="button" className="ai-modal-close" onClick={onClose}>
-            ✕
+            
           </button>
         </div>
 
@@ -57,21 +58,21 @@ function AiReminderModal({ invoice, isOpen, onClose, onCopySuccess }) {
               className={`ai-tone-pill ${tone === 'amable' ? 'active' : ''}`}
               onClick={() => setTone('amable')}
             >
-              🌿 Amable / Cordial
+               Amable / Cordial
             </button>
             <button
               type="button"
               className={`ai-tone-pill ${tone === 'profesional' ? 'active' : ''}`}
               onClick={() => setTone('profesional')}
             >
-              💼 Profesional
+               Profesional
             </button>
             <button
               type="button"
               className={`ai-tone-pill ${tone === 'urgente' ? 'active' : ''}`}
               onClick={() => setTone('urgente')}
             >
-              ⚡ Firme / Vencido
+               Firme / Vencido
             </button>
           </div>
         </div>
@@ -89,21 +90,21 @@ function AiReminderModal({ invoice, isOpen, onClose, onCopySuccess }) {
             className="erp-btn ai-action-btn"
             onClick={handleCopy}
           >
-            {copied ? '✓ ¡Copiado!' : '📋 Copiar texto'}
+            {copied ? ' ¡Copiado!' : ' Copiar texto'}
           </button>
           <button
             type="button"
             className="erp-btn ai-action-whatsapp"
             onClick={handleWhatsApp}
           >
-            💬 Abrir en WhatsApp
+             Abrir en WhatsApp
           </button>
           <button
             type="button"
             className="erp-btn ai-action-email"
             onClick={handleEmail}
           >
-            ✉️ Enviar por Correo
+            ️ Enviar por Correo
           </button>
         </div>
       </div>
