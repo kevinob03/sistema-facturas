@@ -5,6 +5,7 @@ import InvoiceList from './components/InvoiceList'
 import Invoice from './components/Invoice'
 import Dashboard from './components/Dashboard'
 import Toast from './components/Toast'
+import AiAssistantModal from './components/AiAssistantModal'
 import demoInvoices from './data/demoInvoices'
 import { getNextInvoiceNumber } from './utils/invoiceSequence'
 import { filterInvoices, hasActiveFilters, sortInvoices } from './utils/invoiceFilters'
@@ -24,6 +25,7 @@ const navigation = [
 function App() {
   const [invoices, setInvoices] = useState(demoInvoices)
   const [selectedInvoice, setSelectedInvoice] = useState(null)
+  const [preloadedInvoiceData, setPreloadedInvoiceData] = useState(null)
   const [page, setPage] = useState('dashboard')
   const [query, setQuery] = useState('')
   const [clientFilter, setClientFilter] = useState('')
@@ -102,14 +104,26 @@ function App() {
     content = (
       <>
         <PageHeader title="Dashboard" subtitle="Resumen general de tu facturación" />
-        <Dashboard invoices={invoices} />
+        <Dashboard
+          invoices={invoices}
+          onNavigate={navigate}
+          onFilterStatus={(st) => {
+            setQuery(st)
+            navigate('list')
+          }}
+        />
       </>
     )
   } else if (page === 'new') {
     content = (
       <>
         <PageHeader title="Nueva factura" subtitle="Completa los datos para emitir una factura" />
-        <InvoiceForm onAddInvoice={addInvoice} nextNumber={nextInvoiceNumber} existingNumbers={existingNumbers} />
+        <InvoiceForm
+          onAddInvoice={addInvoice}
+          nextNumber={nextInvoiceNumber}
+          existingNumbers={existingNumbers}
+          preloadedData={preloadedInvoiceData}
+        />
       </>
     )
   } else if (page === 'list') {
@@ -160,7 +174,7 @@ function App() {
             </>
           }
         />
-        <Invoice selectedInvoice={selectedInvoice} />
+        <Invoice selectedInvoice={selectedInvoice} onShowToast={showToast} />
       </>
     )
   }
@@ -220,6 +234,24 @@ function App() {
         </aside>
         <main className="erp-main legacy-erp-content">{content}</main>
       </div>
+      <AiAssistantModal
+        invoices={invoices}
+        onNavigate={navigate}
+        onPreloadInvoice={(data) => {
+          setPreloadedInvoiceData(data)
+          navigate('new')
+        }}
+        onFilterStatus={(status) => {
+          setQuery(status)
+          navigate('list')
+        }}
+        onFilterClient={(client) => {
+          setClientFilter(client)
+          navigate('list')
+        }}
+        onShowToast={showToast}
+        onUpdateInvoiceStatus={updateInvoiceStatus}
+      />
       <Toast message={toast} />
     </div>
   )

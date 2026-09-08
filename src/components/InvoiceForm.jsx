@@ -5,6 +5,7 @@ import {
   tipoIdentificacionLabel,
   cleanIdentificacion,
 } from '../utils/haciendaApi'
+import AiQuickInvoiceBar from './AiQuickInvoiceBar'
 
 const emptyItem = () => ({
   id: Date.now() + Math.random(),
@@ -13,7 +14,7 @@ const emptyItem = () => ({
   unitPrice: '',
 })
 
-function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
+function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [], preloadedData = null }) {
   const [issuerName, setIssuerName] = useState('')
   const [issuerTaxId, setIssuerTaxId] = useState('')
   const [clientName, setClientName] = useState('')
@@ -50,6 +51,34 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
 
   const removeItem = (index) => {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index))
+  }
+
+  const handleAiFill = (data) => {
+    if (!data) return
+    if (data.clientName) setClientName(data.clientName)
+    if (data.clientTaxId) setClientTaxId(data.clientTaxId)
+    if (data.clientContact) setClientContact(data.clientContact)
+    if (data.taxRate) setTaxRate(String(data.taxRate))
+    if (data.items && data.items.length > 0) {
+      setItems(data.items)
+    }
+    if (!invoiceDate) {
+      const today = new Date().toISOString().split('T')[0]
+      setInvoiceDate(today)
+    }
+    setErrors({})
+  }
+
+  const [prevPreloadedData, setPrevPreloadedData] = useState(null)
+  if (preloadedData && preloadedData !== prevPreloadedData) {
+    setPrevPreloadedData(preloadedData)
+    if (preloadedData.clientName) setClientName(preloadedData.clientName)
+    if (preloadedData.clientTaxId) setClientTaxId(preloadedData.clientTaxId)
+    if (preloadedData.clientContact) setClientContact(preloadedData.clientContact)
+    if (preloadedData.taxRate) setTaxRate(String(preloadedData.taxRate))
+    if (preloadedData.items && preloadedData.items.length > 0) {
+      setItems(preloadedData.items)
+    }
   }
 
   const consultarCliente = async () => {
@@ -198,8 +227,10 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
   }
 
   return (
-    <form className="invoice-form card" onSubmit={handleSubmit}>
-      <h2 className="form-title">Nueva factura</h2>
+    <div className="invoice-form-view">
+      <AiQuickInvoiceBar onFillForm={handleAiFill} />
+      <form className="invoice-form card" onSubmit={handleSubmit}>
+        <h2 className="form-title">Nueva factura</h2>
 
       <section className="form-section">
         <h3 className="form-section-title">Datos del emisor</h3>
@@ -466,6 +497,7 @@ function InvoiceForm({ onAddInvoice, nextNumber = '', existingNumbers = [] }) {
         </button>
       </div>
     </form>
+  </div>
   )
 }
 

@@ -1419,3 +1419,938 @@
   height: 32px;
   flex: 0 0 32px;
 }
+
+/* ==========================================================
+   MÓDULO DE INTELIGENCIA ARTIFICIAL (IA ECOSYSTEM)
+   ========================================================== */
+
+/* 1. Barra de Facturación Rápida en Formulario */
+.invoice-form-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ai-quick-bar {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(99, 102, 241, 0.08));
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  border-radius: var(--erp-radius, 8px);
+  padding: 16px 20px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ai-quick-bar:hover {
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
+}
+
+.ai-quick-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ai-quick-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-quick-title strong {
+  font-size: 15px;
+  color: var(--erp-text);
+  display: block;
+}
+
+.ai-quick-sub {
+  font-size: 12px;
+  color: var(--erp-muted);
+  margin-top: 2px;
+}
+
+.ai-sparkle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  font-size: 18px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35);
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35); }
+  50% { transform: scale(1.04); box-shadow: 0 4px 16px rgba(99, 102, 241, 0.55); }
+}
+
+.ai-toggle-btn {
+  background: transparent;
+  border: none;
+  font-size: 11px;
+  color: var(--erp-muted);
+  cursor: pointer;
+}
+
+.ai-quick-body {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(59, 130, 246, 0.2);
+}
+
+.ai-input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.ai-prompt-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--erp-border);
+  border-radius: 6px;
+  font-size: 13.5px;
+  color: var(--erp-text);
+  background: var(--erp-surface);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ai-prompt-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.ai-generate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  white-space: nowrap;
+  font-weight: 600;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #2563eb, #6366f1) !important;
+  color: #ffffff !important;
+  border: none !important;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.ai-generate-btn:hover:not(:disabled) {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.ai-generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ai-examples {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.ai-examples-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--erp-muted);
+}
+
+.ai-example-chip {
+  padding: 4px 10px;
+  font-size: 11.5px;
+  border: 1px solid var(--erp-border);
+  border-radius: 20px;
+  background: var(--erp-surface);
+  color: var(--erp-text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.ai-example-chip:hover {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: #3b82f6;
+  color: #2563eb;
+}
+
+.ai-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 2. Banner de Recordatorio con IA en Detalle de Factura */
+.invoice-ai-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  margin: 18px 0;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.06), rgba(234, 88, 12, 0.08));
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 8px;
+}
+
+.invoice-ai-banner-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.invoice-ai-banner-text strong {
+  display: block;
+  font-size: 13.5px;
+  color: var(--erp-text);
+}
+
+.invoice-ai-banner-text p {
+  font-size: 12px;
+  color: var(--erp-muted);
+  margin: 2px 0 0 0;
+}
+
+.invoice-ai-btn {
+  background: linear-gradient(135deg, #d97706, #ea580c) !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+/* 3. Modal de Recordatorios de Cobro */
+.ai-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.ai-modal-card {
+  width: 100%;
+  max-width: 580px;
+  background: var(--erp-surface);
+  border: 1px solid var(--erp-border);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: modalEnter 0.2s ease-out;
+}
+
+@keyframes modalEnter {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.ai-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ai-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-modal-title h3 {
+  font-size: 16px;
+  margin: 0;
+  color: var(--erp-text);
+}
+
+.ai-modal-sub {
+  font-size: 12px;
+  color: var(--erp-muted);
+  margin-top: 2px;
+}
+
+.ai-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: var(--erp-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.ai-modal-close:hover {
+  background: var(--erp-cell);
+  color: var(--erp-text);
+}
+
+.ai-tone-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ai-tone-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--erp-muted);
+}
+
+.ai-tone-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ai-tone-pill {
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 20px;
+  border: 1px solid var(--erp-border);
+  background: var(--erp-cell);
+  color: var(--erp-text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ai-tone-pill:hover {
+  border-color: #3b82f6;
+}
+
+.ai-tone-pill.active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.ai-preview-box {
+  background: var(--erp-cell);
+  border: 1px solid var(--erp-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 13px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.ai-preview-subject {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--erp-border);
+  color: var(--erp-text);
+}
+
+.ai-preview-body {
+  white-space: pre-wrap;
+  line-height: 1.55;
+  color: var(--erp-text);
+}
+
+.ai-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.ai-action-whatsapp {
+  background: #16a34a !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.ai-action-whatsapp:hover {
+  background: #15803d !important;
+}
+
+.ai-action-email {
+  background: #2563eb !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+/* 4. Tarjeta de Diagnóstico Financiero en Dashboard */
+.ai-audit-card {
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.04), rgba(59, 130, 246, 0.02));
+}
+
+.ai-audit-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ai-audit-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-audit-sub {
+  font-size: 12px;
+  color: var(--erp-muted);
+  margin-top: 2px;
+}
+
+.ai-health-score-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: var(--erp-surface);
+  border: 1px solid var(--erp-border);
+  border-radius: 20px;
+  box-shadow: var(--erp-shadow);
+}
+
+.ai-score-label {
+  font-size: 11.5px;
+  color: var(--erp-muted);
+  font-weight: 500;
+}
+
+.ai-score-number {
+  font-size: 15px;
+  color: #10b981;
+  font-weight: 700;
+}
+
+.ai-insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.ai-insight-item {
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--erp-surface);
+  border: 1px solid var(--erp-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-insight-item.insight-warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.ai-insight-item.insight-success {
+  border-left: 4px solid #10b981;
+}
+
+.ai-insight-item.insight-info {
+  border-left: 4px solid #3b82f6;
+}
+
+.ai-insight-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ai-insight-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--erp-cell);
+}
+
+.ai-insight-title {
+  font-size: 13px;
+  color: var(--erp-text);
+}
+
+.ai-insight-desc {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--erp-muted);
+  margin: 0;
+  flex: 1;
+}
+
+.ai-insight-action-btn {
+  align-self: flex-start;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+  color: #2563eb;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ai-insight-action-btn:hover {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* 5. Botón Flotante y Panel del Copiloto Inteligente */
+.ai-floating-trigger {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #1e40af, #4338ca, #6d28d9);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(67, 56, 202, 0.45);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+
+.ai-floating-trigger:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(67, 56, 202, 0.6);
+}
+
+.ai-floating-trigger.active {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.ai-trigger-sparkle {
+  font-size: 16px;
+}
+
+.ai-trigger-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+/* Panel flotante */
+.ai-copilot-panel {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  width: 390px;
+  max-width: calc(100vw - 32px);
+  height: 540px;
+  max-height: calc(100vh - 110px);
+  z-index: 1000;
+  background: var(--erp-surface);
+  border: 1px solid var(--erp-border);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: copilotSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes copilotSlideUp {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ai-copilot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--erp-surface);
+  border-bottom: 1px solid var(--erp-border);
+}
+
+.ai-copilot-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-copilot-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.ai-copilot-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--erp-text);
+  display: block;
+}
+
+.ai-copilot-badge {
+  font-size: 10px;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.ai-copilot-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.ai-ctrl-btn {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: var(--erp-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-ctrl-btn:hover {
+  background: var(--erp-cell);
+  color: var(--erp-text);
+}
+
+.ai-settings-dropdown {
+  padding: 12px 16px;
+  background: var(--erp-cell);
+  border-bottom: 1px solid var(--erp-border);
+  font-size: 11.5px;
+}
+
+.ai-settings-dropdown h4 {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.ai-settings-dropdown p {
+  color: var(--erp-muted);
+  margin-bottom: 8px;
+}
+
+.ai-settings-input-wrap {
+  display: flex;
+  gap: 8px;
+}
+
+.ai-settings-input-wrap input {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--erp-border);
+  background: var(--erp-surface);
+  color: var(--erp-text);
+  font-size: 12px;
+}
+
+.ai-settings-input-wrap button {
+  padding: 6px 12px;
+  font-size: 11.5px;
+}
+
+.ai-copilot-messages {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-message-row {
+  display: flex;
+  width: 100%;
+}
+
+.ai-message-row.user {
+  justify-content: flex-end;
+}
+
+.ai-message-row.ai {
+  justify-content: flex-start;
+}
+
+.ai-bubble {
+  max-width: 86%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.ai-message-row.user .ai-bubble {
+  background: #2563eb;
+  color: #ffffff;
+  border-bottom-right-radius: 3px;
+}
+
+.ai-message-row.ai .ai-bubble {
+  background: var(--erp-cell);
+  color: var(--erp-text);
+  border: 1px solid var(--erp-border);
+  border-bottom-left-radius: 3px;
+}
+
+.ai-bubble-content p {
+  margin-bottom: 6px;
+}
+
+.ai-bubble-content p:last-child {
+  margin-bottom: 0;
+}
+
+.ai-invoice-card {
+  margin-top: 10px;
+  padding: 10px;
+  background: var(--erp-surface);
+  border: 1px solid var(--erp-border);
+  border-radius: 8px;
+  font-size: 11.5px;
+}
+
+.ai-inv-client {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--erp-text);
+}
+
+.ai-inv-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ai-inv-item-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--erp-muted);
+}
+
+.ai-bubble-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.ai-action-chip {
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 16px;
+  border: 1px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  color: #2563eb;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ai-action-chip:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.ai-loading-bubble {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+}
+
+.ai-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--erp-muted);
+  animation: dotBounce 1.2s infinite ease-in-out;
+}
+
+.ai-dot:nth-child(2) { animation-delay: 0.2s; }
+.ai-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+}
+
+.ai-copilot-prompts {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  border-top: 1px solid var(--erp-border);
+  background: var(--erp-surface);
+}
+
+.ai-quick-prompt-pill {
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 14px;
+  border: 1px solid var(--erp-border);
+  background: var(--erp-cell);
+  color: var(--erp-text);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.ai-quick-prompt-pill:hover {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+  color: #2563eb;
+}
+
+.ai-copilot-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--erp-border);
+  background: var(--erp-surface);
+}
+
+.ai-copilot-form input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--erp-border);
+  background: var(--erp-cell);
+  color: var(--erp-text);
+  font-size: 12.5px;
+  outline: none;
+}
+
+.ai-copilot-form input:focus {
+  border-color: #3b82f6;
+}
+
+.ai-send-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, opacity 0.15s;
+}
+
+.ai-send-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.ai-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Modo oscuro (tema Graphite) para componentes IA */
+.factura-erp.theme-graphite .ai-quick-bar {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.15), rgba(67, 56, 202, 0.12));
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.factura-erp.theme-graphite .ai-prompt-input,
+.factura-erp.theme-graphite .ai-copilot-form input,
+.factura-erp.theme-graphite .ai-settings-input-wrap input {
+  background: #111827;
+  color: #f1f5f9;
+  border-color: #374151;
+}
+
+.factura-erp.theme-graphite .ai-example-chip,
+.factura-erp.theme-graphite .ai-quick-prompt-pill,
+.factura-erp.theme-graphite .ai-tone-pill {
+  background: #1f2937;
+  color: #e2e8f0;
+  border-color: #374151;
+}
+
+.factura-erp.theme-graphite .ai-example-chip:hover,
+.factura-erp.theme-graphite .ai-quick-prompt-pill:hover {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border-color: #60a5fa;
+}
+
+.factura-erp.theme-graphite .ai-preview-box {
+  background: #111827;
+  border-color: #374151;
+}
+
+.factura-erp.theme-graphite .ai-insight-item {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.factura-erp.theme-graphite .ai-audit-card {
+  background: linear-gradient(135deg, rgba(67, 56, 202, 0.12), rgba(30, 58, 138, 0.08));
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.factura-erp.theme-graphite .ai-health-score-badge {
+  background: #111827;
+  border-color: #374151;
+}
+
+@media (max-width: 640px) {
+  .ai-floating-trigger .ai-trigger-label {
+    display: none;
+  }
+  .ai-floating-trigger {
+    padding: 12px;
+    bottom: 16px;
+    right: 16px;
+  }
+  .ai-copilot-panel {
+    right: 12px;
+    left: 12px;
+    width: auto;
+    bottom: 74px;
+    height: 480px;
+  }
+}
