@@ -7,8 +7,22 @@ function Dashboard({ invoices }) {
   const averageTotal = totalInvoices === 0 ? 0 : totalBilled / totalInvoices
 
   const now = new Date()
+  const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  const daysElapsed = Math.max(now.getDate(), 1)
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
+  const currentMonthInvoices = invoices.filter(
+    (invoice) => invoice.date.startsWith(currentMonthKey) && invoice.status !== 'anulada',
+  )
+  const currentMonthTotal = currentMonthInvoices.reduce(
+    (sum, invoice) => sum + getInvoiceTotal(invoice),
+    0,
+  )
+  const dailyAverage = currentMonthTotal / daysElapsed
+  const projectedMonthTotal = dailyAverage * daysInMonth
+  const currentMonthLabel = now.toLocaleDateString('es', { month: 'long', year: 'numeric' })
+
   const monthKeys = []
-  for (let i = 5; i >= 0; i--) {
+  for (let i = 5; i >= 0; i -= 1) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
     monthKeys.push({
       key: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
@@ -18,7 +32,7 @@ function Dashboard({ invoices }) {
 
   const monthTotals = monthKeys.map((month) => ({ ...month, total: 0 }))
   invoices.forEach((invoice) => {
-    const month = monthTotals.find((m) => m.key === invoice.date.slice(0, 7))
+    const month = monthTotals.find((item) => item.key === invoice.date.slice(0, 7))
     if (month) month.total += getInvoiceTotal(invoice)
   })
   const maxMonth = Math.max(...monthTotals.map((month) => month.total), 1)
@@ -60,7 +74,24 @@ function Dashboard({ invoices }) {
           <span className="metric-label">Promedio por factura</span>
           <span className="metric-value">{formatMoney(averageTotal)}</span>
         </div>
+        <div className="metric-card card metric-card-projection">
+          <span className="metric-label">Proyección al cierre</span>
+          <span className="metric-value">{formatMoney(projectedMonthTotal)}</span>
+          <span className="metric-foot">Basada en {daysElapsed} de {daysInMonth} días</span>
+        </div>
       </div>
+
+      <section className="card projection-card">
+        <div>
+          <h2 className="chart-title">Proyección mensual</h2>
+          <p className="projection-description">Estimación de cierre para {currentMonthLabel}</p>
+        </div>
+        <div className="projection-data">
+          <div><span>Facturado vigente</span><strong>{formatMoney(currentMonthTotal)}</strong></div>
+          <div><span>Promedio diario</span><strong>{formatMoney(dailyAverage)}</strong></div>
+          <div><span>Facturas del mes</span><strong>{currentMonthInvoices.length}</strong></div>
+        </div>
+      </section>
 
       <div className="charts-grid">
         <section className="card chart-card full">
@@ -70,10 +101,7 @@ function Dashboard({ invoices }) {
               <div className="bar-col" key={month.key}>
                 <span className="bar-value">{formatMoney(month.total)}</span>
                 <div className="bar-canvas">
-                  <div
-                    className="bar-fill"
-                    style={{ height: `${(month.total / maxMonth) * 100}%` }}
-                  />
+                  <div className="bar-fill" style={{ height: `${(month.total / maxMonth) * 100}%` }} />
                 </div>
                 <span className="bar-label">{month.label}</span>
               </div>
@@ -85,40 +113,24 @@ function Dashboard({ invoices }) {
           <h2 className="chart-title">Distribución por estado</h2>
           {statusData.map((item) => (
             <div className="h-bar-row" key={item.status}>
-              <span className="h-bar-label">
-                <StatusBadge status={item.status} />
-              </span>
+              <span className="h-bar-label"><StatusBadge status={item.status} /></span>
               <div className="h-bar-track">
-                <div
-                  className={`h-bar-fill status-fill-${item.status}`}
-                  style={{ width: `${(item.count / maxCount) * 100}%` }}
-                />
+                <div className={`h-bar-fill status-fill-${item.status}`} style={{ width: `${(item.count / maxCount) * 100}%` }} />
               </div>
-              <span className="h-bar-value">
-                {item.count} · {formatMoney(item.amount)}
-              </span>
+              <span className="h-bar-value">{item.count} · {formatMoney(item.amount)}</span>
             </div>
           ))}
         </section>
 
         <section className="card chart-card">
           <h2 className="chart-title">Top clientes</h2>
-          {topClients.length === 0 ? (
-            <p className="empty-state">Sin datos</p>
-          ) : (
-            topClients.map((client) => (
-              <div className="h-bar-row" key={client.name}>
-                <span className="h-bar-label">{client.name}</span>
-                <div className="h-bar-track">
-                  <div
-                    className="h-bar-fill"
-                    style={{ width: `${(client.total / maxClient) * 100}%` }}
-                  />
-                </div>
-                <span className="h-bar-value">{formatMoney(client.total)}</span>
-              </div>
-            ))
-          )}
+          {topClients.length === 0 ? <p className="empty-state">Sin datos</p> : topClients.map((client) => (
+            <div className="h-bar-row" key={client.name}>
+              <span className="h-bar-label">{client.name}</span>
+              <div className="h-bar-track"><div className="h-bar-fill" style={{ width: `${(client.total / maxClient) * 100}%` }} /></div>
+              <span className="h-bar-value">{formatMoney(client.total)}</span>
+            </div>
+          ))}
         </section>
       </div>
     </div>

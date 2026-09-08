@@ -21,10 +21,11 @@ function Invoice({ selectedInvoice }) {
   }
 
   const { issuer, client, invoiceNumber, date, items } = selectedInvoice
+  const taxRate = Number.isFinite(Number(selectedInvoice.taxRate)) ? Number(selectedInvoice.taxRate) : TAX_RATE
   const subtotal = getSubtotal(items)
-  const tax = getTax(subtotal)
+  const tax = getTax(subtotal, taxRate)
   const total = getTotal(subtotal, tax)
-  const taxPercent = Math.round(TAX_RATE * 100)
+  const taxPercent = Math.round(taxRate * 100)
 
   return (
     <div className="invoice card">

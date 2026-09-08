@@ -1052,7 +1052,7 @@
 .factura-erp .invoice-filters input,
 .factura-erp .invoice-filters select {
   min-height: 32px;
-  background: #fff;
+  background: var(--erp-cell);
   color: var(--erp-text);
   font-size: 12px;
 }
@@ -1148,4 +1148,274 @@
   .factura-erp .erp-side-item { justify-content: center; padding: 0; }
   .factura-erp .legacy-erp-content { padding: 12px; }
   .factura-erp .legacy-erp-page-head { align-items: flex-start; }
+}
+
+/* Marco visual ERP de la aplicación real */
+.factura-erp {
+  --erp-canvas: #dbe4ee;
+  --erp-canvas-deep: #e2e8f0;
+  --erp-surface: #e9f0f8;
+  --erp-surface-alt: #e1e9f3;
+  --erp-cell: #edf2f7;
+  --erp-border: #cbd5e1;
+  --erp-border-soft: #d7e0ea;
+  --erp-text: #1e293b;
+  --erp-text-strong: #0c1b2a;
+  --erp-muted: #475569;
+  --erp-muted-soft: #64748b;
+  --erp-accent: #1d4ed8;
+  --erp-accent-soft: #dbe6ff;
+  --erp-green: #15803d;
+  --erp-green-soft: #e7f5ec;
+  --erp-red: #b4534c;
+  --erp-red-soft: #f8e8e5;
+  --erp-mono: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+  min-height: 100vh;
+  background: var(--erp-canvas);
+  color: var(--erp-text);
+  display: flex;
+  flex-direction: column;
+}
+
+.erp-topbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 58px;
+  padding: 0 20px;
+  background: var(--erp-surface-alt);
+  border-bottom: 1px solid var(--erp-border);
+}
+
+.erp-brand, .erp-brand-text, .erp-nodes, .erp-node, .erp-body, .erp-view-head, .erp-view-actions, .erp-side-item, .erp-side-head {
+  display: flex;
+}
+
+.erp-brand { align-items: center; gap: 10px; }
+.erp-brand-text, .erp-node { flex-direction: column; }
+.erp-brand-text { line-height: 1.25; }
+.erp-monogram, .erp-side-monogram { display: inline-flex; align-items: center; justify-content: center; border-radius: 3px; font-family: var(--erp-mono); font-weight: 700; }
+.erp-monogram { width: 32px; height: 32px; background: var(--erp-text-strong); color: #edf4ff; font-size: 11px; letter-spacing: .5px; }
+.erp-brand-name { color: var(--erp-text-strong); font-size: 13px; font-weight: 700; }
+.erp-brand-sub { color: var(--erp-muted); font-size: 10px; }
+.erp-nodes { margin-left: auto; align-items: center; }
+.erp-node { gap: 2px; }
+.erp-node-label, .erp-side-label { color: var(--erp-muted-soft); font-size: 9px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; }
+.erp-node-value { color: var(--erp-text); font-size: 12px; font-weight: 600; }
+.erp-node-pac { align-items: center; gap: 6px; color: var(--erp-green); }
+.erp-pulse { width: 7px; height: 7px; border-radius: 50%; background: #22a35a; box-shadow: 0 0 0 2px var(--erp-green-soft); }
+
+.erp-body { flex: 1; min-height: 0; }
+.erp-sidebar { width: 210px; flex-shrink: 0; background: #172b42; border-right: 1px solid #253c55; color: #cbd5e1; }
+.erp-side-head { align-items: center; gap: 9px; height: 46px; padding: 0 12px; border-bottom: 1px solid #253c55; }
+.erp-side-monogram { width: 25px; height: 25px; background: #243c57; color: #dbeafe; font-size: 13px; }
+.erp-side-title { color: #dbeafe; font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+.erp-side-group { padding: 14px 8px; }
+.erp-side-label { padding: 0 8px 7px; color: #8fa4bc; }
+.factura-erp .erp-side-item { align-items: center; gap: 10px; width: 100%; height: 34px; margin: 2px 0; padding: 0 9px; border: 0; border-radius: 3px; background: transparent; color: #b6c5d6; font-size: 12.5px; cursor: pointer; }
+.factura-erp .erp-side-item:hover { background: #213a55; color: #fff; }
+.factura-erp .erp-side-item.active { background: #24549b; color: #fff; font-weight: 700; }
+.erp-side-icon { display: inline-flex; width: 16px; justify-content: center; font-family: var(--erp-mono); font-size: 14px; }
+.erp-main { flex: 1; min-width: 0; padding: 18px 20px; overflow: auto; }
+.erp-view-head { align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.erp-view-title { margin: 0; color: var(--erp-text-strong); font-size: 19px; font-weight: 700; }
+.erp-view-sub { margin: 2px 0 0; color: var(--erp-muted); font-size: 12px; }
+.erp-view-actions { align-items: center; gap: 8px; flex-wrap: wrap; }
+.erp-btn { height: 32px; padding: 0 12px; border: 1px solid var(--erp-border); border-radius: 3px; background: var(--erp-surface); color: var(--erp-text); font-size: 12px; font-weight: 700; cursor: pointer; }
+.erp-btn:hover { background: var(--erp-cell); border-color: var(--erp-muted-soft); }
+.erp-btn-primary { border-color: var(--erp-accent); background: var(--erp-accent); color: #fff; }
+.erp-btn-primary:hover { background: #1e40af; }
+.erp-btn-danger { border-color: #e7c4bf; background: var(--erp-red-soft); color: #963f38; }
+.erp-btn-danger:hover { background: #f1d9d5; }
+
+@media (max-width: 760px) {
+  .erp-topbar { padding: 0 12px; }
+  .erp-brand-sub, .erp-nodes, .erp-side-title, .erp-side-label, .factura-erp .erp-side-item > span:last-child { display: none; }
+  .erp-sidebar { width: 52px; }
+  .factura-erp .erp-side-item { justify-content: center; padding: 0; }
+  .erp-main { padding: 12px; }
+}
+
+.factura-erp .metric-card-projection {
+  border-top-color: var(--erp-green);
+}
+
+.factura-erp .metric-foot {
+  color: var(--erp-muted);
+  font-size: 10px;
+}
+
+.factura-erp .projection-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 16px;
+}
+
+.factura-erp .projection-description {
+  margin-top: 2px;
+  color: var(--erp-muted);
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.factura-erp .projection-data {
+  display: flex;
+  align-items: stretch;
+  gap: 18px;
+}
+
+.factura-erp .projection-data > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 112px;
+  padding-left: 18px;
+  border-left: 1px solid var(--erp-border);
+}
+
+.factura-erp .projection-data span {
+  color: var(--erp-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .35px;
+  text-transform: uppercase;
+}
+
+.factura-erp .projection-data strong {
+  color: var(--erp-text-strong);
+  font-family: var(--erp-mono);
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .factura-erp .projection-card,
+  .factura-erp .projection-data {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .factura-erp .projection-data {
+    gap: 10px;
+  }
+
+  .factura-erp .projection-data > div {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+.factura-erp .cell-number {
+  font-family: var(--erp-mono);
+}
+
+.factura-erp .invoice-table tr.invoice-atypical td:first-child {
+  border-left: 3px solid #b7791f;
+}
+
+.factura-erp .atypical-flag {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 7px;
+  padding: 1px 5px;
+  border: 1px solid #e4c98c;
+  border-radius: 3px;
+  background: #f8efd8;
+  color: #8a5b12;
+  font-family: system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .25px;
+  text-transform: uppercase;
+}
+
+/* Temas visuales */
+.factura-erp {
+  --erp-sidebar: #172b42;
+  --erp-sidebar-border: #253c55;
+  --erp-sidebar-hover: #213a55;
+  --erp-sidebar-active: #24549b;
+}
+
+.factura-erp.theme-graphite {
+  --erp-canvas: #101827;
+  --erp-canvas-deep: #162033;
+  --erp-surface: #172235;
+  --erp-surface-alt: #1d2a3d;
+  --erp-cell: #24344a;
+  --erp-border: #34465e;
+  --erp-border-soft: #2a3b52;
+  --erp-text: #dbe7f4;
+  --erp-text-strong: #f1f5f9;
+  --erp-muted: #a9b8c9;
+  --erp-muted-soft: #91a3b8;
+  --erp-accent: #67a7ff;
+  --erp-accent-soft: #1d426f;
+  --erp-green: #5bc38b;
+  --erp-green-soft: #173c31;
+  --erp-red: #e78b83;
+  --erp-red-soft: #482a30;
+  --erp-sidebar: #0b1220;
+  --erp-sidebar-border: #26364b;
+  --erp-sidebar-hover: #18263a;
+  --erp-sidebar-active: #285a9d;
+}
+
+.factura-erp .erp-sidebar { background: var(--erp-sidebar); border-color: var(--erp-sidebar-border); }
+.factura-erp .erp-side-head { border-color: var(--erp-sidebar-border); }
+.factura-erp .erp-side-item:hover { background: var(--erp-sidebar-hover); }
+.factura-erp .erp-side-item.active { background: var(--erp-sidebar-active); }
+
+.factura-erp .theme-picker { position: relative; margin-left: 4px; }
+.factura-erp .theme-trigger { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; padding: 0; border: 1px solid var(--erp-border); border-radius: 3px; background: var(--erp-surface); color: var(--erp-text); font: 700 11px system-ui, sans-serif; cursor: pointer; }
+.factura-erp .theme-trigger:hover { background: var(--erp-cell); border-color: var(--erp-muted-soft); }
+.factura-erp .theme-options { position: absolute; top: calc(100% + 6px); right: 0; z-index: 20; width: 164px; padding: 5px; border: 1px solid var(--erp-border); border-radius: 4px; background: var(--erp-surface); box-shadow: 0 8px 18px rgba(12, 27, 42, .16); }
+.factura-erp .theme-option { display: flex; align-items: center; gap: 8px; width: 100%; padding: 7px; border: 0; border-radius: 3px; background: transparent; color: var(--erp-text); font: 600 11px system-ui, sans-serif; text-align: left; cursor: pointer; }
+.factura-erp .theme-option:hover, .factura-erp .theme-option.active { background: var(--erp-cell); }
+.factura-erp .theme-option.active { color: var(--erp-accent); }
+.factura-erp .theme-swatch { width: 13px; height: 13px; border: 1px solid rgba(12, 27, 42, .18); border-radius: 2px; }
+.factura-erp .theme-swatch-blue { background: #1d4ed8; }.factura-erp .theme-swatch-graphite { background: #24344a; }
+
+@media (max-width: 760px) { .factura-erp .theme-picker { margin-left: auto; } }
+
+.factura-erp.theme-graphite .invoice-form input,
+.factura-erp.theme-graphite .invoice-form select,
+.factura-erp.theme-graphite .invoice-form textarea,
+.factura-erp.theme-graphite .invoice-filters input,
+.factura-erp.theme-graphite .invoice-filters select {
+  background: #101827;
+  color: var(--erp-text);
+}
+
+.factura-erp.theme-graphite .invoice-form input::placeholder,
+.factura-erp.theme-graphite .invoice-form textarea::placeholder,
+.factura-erp.theme-graphite .invoice-filters input::placeholder {
+  color: #7f91a6;
+}
+
+.factura-erp.theme-graphite .invoice-table tr:hover td,
+.factura-erp.theme-graphite .invoice-items-table tr:hover td {
+  background: var(--erp-cell);
+}
+
+.factura-erp.theme-graphite .theme-swatch-graphite {
+  border-color: #8295aa;
+}
+/* Los temas claros usan superficies mate; Grafito es el único modo oscuro. */
+.factura-erp.theme-blue .invoice-form input,
+.factura-erp.theme-blue .invoice-form select,
+.factura-erp.theme-blue .invoice-form textarea,
+.factura-erp.theme-blue .invoice-filters input,
+.factura-erp.theme-blue .invoice-filters select {
+  background: #eef4fa;
+}
+
+
+.factura-erp .theme-icon { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.factura-erp .erp-brand-logo {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
 }
